@@ -3,6 +3,7 @@ name: Update IATA→Timezone & Geo Mapping
 on:
   schedule:
     - cron: '0 0 * * *'   # every day at 00:00 UTC
+  workflow_dispatch:
 
 jobs:
   refresh-mapping:
