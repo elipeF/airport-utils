@@ -1,7 +1,7 @@
 name: "Auto-merge Dependabot updates"
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - labeled
@@ -10,6 +10,10 @@ on:
       - ready_for_review
     branches:
       - main
+
+permissions:
+  pull-requests: write
+  contents: write
 
 jobs:
   automerge:
@@ -24,5 +28,4 @@ jobs:
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
-          # auto-merge only when all required status checks pass
-          approval-count: 0
+          required-status-checks: build-and-test
