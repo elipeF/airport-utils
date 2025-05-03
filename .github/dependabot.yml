@@ -8,3 +8,6 @@ updates:
     labels:
       - "dependencies"                    # Attach this label
     versioning-strategy: "auto"           # Allow patch, minor & major bumps
+    commit-message:
+      prefix: "chore(deps)"
+      include: scope
