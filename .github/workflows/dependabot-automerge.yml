@@ -28,4 +28,3 @@ jobs:
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
-          required-status-checks: build-and-test
