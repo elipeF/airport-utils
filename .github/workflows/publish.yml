@@ -9,21 +9,25 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # Allows push
-      pull-requests: write
+      contents: write
 
     steps:
       - name: Check out code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0           # Fetch all history for semantic-release
-          persist-credentials: true  # Persist GITHUB_TOKEN for pushes
+          fetch-depth: 0
+          persist-credentials: true
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org/'
+      - name: Write .npmrc for registry auth
+        run: |
+          # Public npm
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          # GitHub
+          echo "@elipeF:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
         run: npm ci
