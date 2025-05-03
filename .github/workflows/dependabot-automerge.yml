@@ -1,0 +1,28 @@
+name: "Auto-merge Dependabot updates"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - labeled
+      - unlabeled
+      - synchronize
+      - ready_for_review
+    branches:
+      - main
+
+jobs:
+  automerge:
+    if: >
+      github.actor == 'dependabot[bot]' &&
+      contains(github.event.pull_request.labels.*.name, 'dependencies')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enable auto-merge when CI passes
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+          # auto-merge only when all required status checks pass
+          approval-count: 0
