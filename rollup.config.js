@@ -4,16 +4,21 @@ import commonjs from '@rollup/plugin-commonjs';
 import pkg from './package.json' assert { type: 'json' };
 
 
-const external = [
-  ...Object.keys(pkg.dependencies || {}),
-  ...Object.keys(pkg.peerDependencies || {}),
-];
+const dependencies = Object.keys(pkg.dependencies || {});
+const peerDependencies = Object.keys(pkg.peerDependencies || {});
+const externalBase = [...dependencies, ...peerDependencies];
+
+// ESM build: bundle Day.js & its plugins by excluding them from external
+const externalEsm = externalBase.filter(dep => dep !== 'dayjs');
+
+// CJS build: externalize everything
+const externalCjs = externalBase;
 
 export default [
   // ESM build
   {
     input: 'src/index.ts',
-    external,
+    external: externalEsm,
     plugins: [
       resolve(),
       commonjs(),
@@ -35,7 +40,7 @@ export default [
   // CJS build
   {
     input: 'src/index.ts',
-    external,
+    external: externalCjs,
     plugins: [
       resolve(),
       commonjs(),
