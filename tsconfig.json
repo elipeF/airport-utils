@@ -4,11 +4,14 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "declaration": true,
+    "rootDir": "src",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "scripts/**/*", "tests/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import { parseISO } from 'date-fns';
+import { TZDate } from '@date-fns/tz';
 import { timezones } from './mapping/timezones';
 import {
   UnknownAirportError,
@@ -8,53 +7,78 @@ import {
   UnknownTimezoneError
 } from './errors';
 
-// Initialize plugins
-dayjs.extend(utc);
-dayjs.extend(timezone);
+const ISO_LOCAL_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/;
+
+function parseLocalIso(
+    localIso: string
+): [number, number, number, number, number, number] {
+  const m = ISO_LOCAL_RE.exec(localIso);
+  if (!m) throw new InvalidTimestampError(localIso);
+  const [, Y, Mo, D, h, mi, s] = m;
+  return [
+    Number(Y),
+    Number(Mo) - 1,
+    Number(D),
+    Number(h),
+    Number(mi),
+    s ? Number(s) : 0
+  ];
+}
 
 /**
- * Convert local ISO 8601 (YYYY-MM-DDTHH:mm) at an airport into UTC ISO string.
- * @throws UnknownAirportError | InvalidTimestampError
+ * Convert a local ISO‐8601 string at an airport (IATA) into a UTC ISO string.
+ * Always emits "YYYY-MM-DDTHH:mm:ssZ" (no milliseconds).
  */
 export function convertToUTC(localIso: string, iata: string): string {
   const tz = timezones[iata];
   if (!tz) throw new UnknownAirportError(iata);
 
-  // 1) Pre-validate timestamp
-  const localDt = dayjs(localIso, /* no format, ISO parse */);
-  if (!localDt.isValid()) throw new InvalidTimestampError(localIso);
+  // Quick semantic check
+  const base = parseISO(localIso);
+  if (isNaN(base.getTime())) throw new InvalidTimestampError(localIso);
 
-  // 2) Then apply timezone conversion
-  let dt;
+  const [year, month, day, hour, minute, second] = parseLocalIso(localIso);
+
+  let zoned: TZDate;
   try {
-    dt = dayjs.tz(localIso, tz);
+    zoned = TZDate.tz(tz, year, month, day, hour, minute, second);
   } catch {
-    // Shouldn't happen for valid tz, but just in case:
     throw new InvalidTimestampError(localIso);
   }
+  if (isNaN(zoned.getTime())) throw new InvalidTimestampError(localIso);
 
-  return dt.utc().format(); // "YYYY-MM-DDTHH:mm:ssZ"
+  // Strip ".000" from the ISO string
+  return new Date(zoned.getTime()).toISOString().replace('.000Z', 'Z');
 }
 
 /**
- * Convert local ISO 8601 string in any IANA timezone to UTC ISO string.
- * @throws UnknownTimezoneError | InvalidTimestampError
+ * Convert a local ISO‐8601 string in any IANA timezone into a UTC ISO string.
+ * Always emits "YYYY-MM-DDTHH:mm:ssZ" (no milliseconds).
  */
 export function convertLocalToUTCByZone(
     localIso: string,
     timeZone: string
 ): string {
-  // 1) Validate timestamp first
-  const localDt = dayjs(localIso);
-  if (!localDt.isValid()) throw new InvalidTimestampError(localIso);
-
-  // 2) Apply timezone, catching only invalid timezone errors
-  let dt;
+  // Validate timezone
   try {
-    dt = dayjs.tz(localIso, timeZone);
+    new Intl.DateTimeFormat('en-US', { timeZone }).format();
   } catch {
     throw new UnknownTimezoneError(timeZone);
   }
 
-  return dt.utc().format();
+  // Quick semantic check
+  const base = parseISO(localIso);
+  if (isNaN(base.getTime())) throw new InvalidTimestampError(localIso);
+
+  const [year, month, day, hour, minute, second] = parseLocalIso(localIso);
+
+  let zoned: TZDate;
+  try {
+    zoned = TZDate.tz(timeZone, year, month, day, hour, minute, second);
+  } catch {
+    throw new UnknownTimezoneError(timeZone);
+  }
+  if (isNaN(zoned.getTime())) throw new InvalidTimestampError(localIso);
+
+  return new Date(zoned.getTime()).toISOString().replace('.000Z', 'Z');
 }
