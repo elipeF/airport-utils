@@ -16,8 +16,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Single token used for updating branches AND approving PRs
-  # Prefer a maintainer PAT if your org blocks Actions approvals
   BOT_TOKEN: ${{ secrets.BOT_MAINTAINER_TOKEN != '' && secrets.BOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
   APPROVED_BOTS: '["dependabot[bot]","github-actions[bot]"]'
 
@@ -71,9 +69,7 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const APPROVED_BOTS = JSON.parse(process.env.APPROVED_BOTS);
-
-            const { data: me } = await github.rest.users.getAuthenticated();
-            const myLogin = me.login.toLowerCase();
+            const myLogin = process.env.GITHUB_ACTOR.toLowerCase();
 
             async function approveOne(number) {
               const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
@@ -97,7 +93,6 @@ jobs:
                 return;
               }
 
-              // Approve without a message
               await github.rest.pulls.createReview({
                 owner, repo, pull_number: number,
                 event: 'APPROVE'
