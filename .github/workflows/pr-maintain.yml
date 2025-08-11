@@ -1,0 +1,95 @@
+name: Maintain Bot PRs
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: bot-pr-maintenance
+  cancel-in-progress: false
+
+env:
+  # Prefer a maintainer PAT if your org disallows Actions approvals.
+  # Create a fine-grained PAT with Contents:RW, Pull requests:RW and save as DEPENDABOT_MAINTAINER_TOKEN.
+  BOT_TOKEN: ${{ secrets.DEPENDABOT_MAINTAINER_TOKEN != '' && secrets.DEPENDABOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
+  APPROVED_BOTS: '["dependabot[bot]","github-actions[bot]"]'
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine PR number (if event is a PR)
+        id: pr
+        run: |
+          if [ "${{ github.event.pull_request.number }}" != "" ]; then
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update the PR branch to latest base
+        if: ${{ steps.pr.outputs.number != '' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ env.BOT_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const APPROVED_BOTS = JSON.parse(process.env.APPROVED_BOTS);
+
+            async function updateOne(number) {
+              const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
+              if (!APPROVED_BOTS.includes(pr.user.login) || pr.state !== 'open') return;
+              try {
+                await github.rest.pulls.updateBranch({ owner, repo, pull_number: number });
+                core.info(`Updated branch for PR #${number}`);
+              } catch (e) {
+                core.info(`UpdateBranch skipped for PR #${number}: ${e.message}`);
+              }
+            }
+
+            if (context.eventName === 'pull_request_target' && context.payload.pull_request) {
+              await updateOne(context.payload.pull_request.number);
+            } else {
+              const all = await github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', per_page: 100 });
+              for (const pr of all.filter(p => APPROVED_BOTS.includes(p.user.login))) {
+                await updateOne(pr.number);
+              }
+            }
+
+      - name: Auto-approve bot PR(s)
+        if: ${{ steps.pr.outputs.number != '' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ env.BOT_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const APPROVED_BOTS = JSON.parse(process.env.APPROVED_BOTS);
+
+            async function approveOne(number) {
+              const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
+              if (!APPROVED_BOTS.includes(pr.user.login) || pr.state !== 'open') return;
+
+              await github.rest.pulls.createReview({
+                owner, repo, pull_number: number,
+                event: 'APPROVE',
+                body: 'Automated approval for trusted bot PR.'
+              });
+              core.info(`Approved PR #${number} from ${pr.user.login}`);
+            }
+
+            if (context.eventName === 'pull_request_target' && context.payload.pull_request) {
+              await approveOne(context.payload.pull_request.number);
+            } else {
+              const all = await github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', per_page: 100 });
+              for (const pr of all.filter(p => APPROVED_BOTS.includes(p.user.login))) {
+                await approveOne(pr.number);
+              }
+            }
+
