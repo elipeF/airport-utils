@@ -7,33 +7,67 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-mapping
+  cancel-in-progress: false
 
 jobs:
   refresh-mapping:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Install dependencies
         run: npm ci
+
       - name: Generate updated mapping
         run: npm run update:mapping
+
       - name: Build
         run: npm run build
+
       - name: Test
         run: npm test
-      - name: Commit & push if changed
+
+      - name: Commit changes (no push)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add src/mapping/*
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(mapping): daily update of mapping files"
-            git push
-          else
+          if git diff --cached --quiet; then
             echo "No changes in mapping files"
+            echo "no_changes=true" >> $GITHUB_ENV
+          else
+            git commit -m "chore(mapping): daily update of mapping files"
           fi
+
+      - name: Create or update PR
+        if: env.no_changes != 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: chore(mapping): daily update of mapping files
+          branch: chore/mapping-auto
+          title: "chore(mapping): daily update of mapping files"
+          body: "Automated update of mapping files."
+          labels: dependencies
+          delete-branch: true
+
+      - name: Enable auto-merge (squash)
+        if: steps.cpr.outputs.pull-request-number
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
