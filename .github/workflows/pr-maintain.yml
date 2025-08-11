@@ -16,9 +16,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Prefer a maintainer PAT if your org disallows Actions approvals.
-  # Create a fine-grained PAT with Contents:RW, Pull requests:RW and save as DEPENDABOT_MAINTAINER_TOKEN.
-  BOT_TOKEN: ${{ secrets.DEPENDABOT_MAINTAINER_TOKEN != '' && secrets.DEPENDABOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
+  # Single token used for updating branches AND approving PRs
+  # Prefer a maintainer PAT if your org blocks Actions approvals
+  BOT_TOKEN: ${{ secrets.BOT_MAINTAINER_TOKEN != '' && secrets.BOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
   APPROVED_BOTS: '["dependabot[bot]","github-actions[bot]"]'
 
 jobs:
@@ -62,7 +62,7 @@ jobs:
               }
             }
 
-      - name: Auto-approve bot PR(s)
+      - name: Auto-approve bot PR(s) (skip if reviewer == author or already approved)
         if: ${{ steps.pr.outputs.number != '' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         uses: actions/github-script@v7
         with:
@@ -72,14 +72,35 @@ jobs:
             const repo = context.repo.repo;
             const APPROVED_BOTS = JSON.parse(process.env.APPROVED_BOTS);
 
+            const { data: me } = await github.rest.users.getAuthenticated();
+            const myLogin = me.login.toLowerCase();
+
             async function approveOne(number) {
               const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
+              const author = pr.user.login.toLowerCase();
               if (!APPROVED_BOTS.includes(pr.user.login) || pr.state !== 'open') return;
 
+              // Skip if reviewer == author
+              if (author === myLogin) {
+                core.info(`Skipping PR #${number} - reviewer (${myLogin}) is the author.`);
+                return;
+              }
+
+              // Skip if already approved by this reviewer
+              const { data: reviews } = await github.rest.pulls.listReviews({ owner, repo, pull_number: number });
+              const hasApproval = reviews.some(r =>
+                r.user?.login?.toLowerCase() === myLogin &&
+                r.state?.toLowerCase() === 'approved'
+              );
+              if (hasApproval) {
+                core.info(`Skipping PR #${number} - already approved by ${myLogin}.`);
+                return;
+              }
+
+              // Approve without a message
               await github.rest.pulls.createReview({
                 owner, repo, pull_number: number,
-                event: 'APPROVE',
-                body: 'Automated approval for trusted bot PR.'
+                event: 'APPROVE'
               });
               core.info(`Approved PR #${number} from ${pr.user.login}`);
             }
@@ -93,3 +114,10 @@ jobs:
               }
             }
 
+      - name: Enable auto-merge (squash)
+        if: ${{ steps.pr.outputs.number != '' }}
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ env.BOT_TOKEN }}
+          pull-request-number: ${{ steps.pr.outputs.number }}
+          merge-method: squash
