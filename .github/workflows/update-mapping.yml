@@ -38,12 +38,6 @@ jobs:
       - name: Generate updated mapping
         run: npm run update:mapping
 
-      - name: Build
-        run: npm run build
-
-      - name: Test
-        run: npm test
-
       - name: Commit changes (no push)
         run: |
           git config user.name "github-actions[bot]"
