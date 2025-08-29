@@ -3132,6 +3132,7 @@ export const timezones: Record<string, string> =
   "GWL": "Asia/Kolkata",
   "GWN": "Pacific/Port_Moresby",
   "GWO": "America/Chicago",
+  "GWR": "Europe/London",
   "GWS": "America/Denver",
   "GWT": "Europe/Berlin",
   "GWV": "America/New_York",
