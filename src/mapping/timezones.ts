@@ -7111,6 +7111,7 @@ export const timezones: Record<string, string> =
   "PXH": "Australia/Adelaide",
   "PXL": "America/Phoenix",
   "PXM": "America/Mexico_City",
+  "PXN": "Asia/Kolkata",
   "PXO": "Atlantic/Madeira",
   "PXR": "Asia/Bangkok",
   "PXS": "Europe/Madrid",
