@@ -13,7 +13,9 @@ concurrency:
   group: update-mapping
   cancel-in-progress: false
 
-
+env:
+  # Single token for commits, PR creation, and auto-merge
+  BOT_TOKEN: ${{ secrets.BOT_MAINTAINER_TOKEN != '' && secrets.BOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
 
 jobs:
   refresh-mapping:
@@ -23,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.BOT_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -53,7 +55,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.BOT_TOKEN }}
           commit-message: "chore(mapping): daily update of mapping files"
           branch: chore/mapping-auto
           title: "chore(mapping): daily update of mapping files"
@@ -65,6 +67,6 @@ jobs:
         if: steps.cpr.outputs.pull-request-number
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.BOT_MAINTAINER_TOKEN }}
+          token: ${{ env.BOT_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
