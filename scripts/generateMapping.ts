@@ -19,7 +19,8 @@ async function generateMapping() {
     lon: header.indexOf('longitude'),
     name: header.indexOf('name'),
     city: header.indexOf('city_name_list'),
-    country: header.indexOf('country_code')
+    country: header.indexOf('country_code'),
+    continent: header.indexOf('continent_name')
   };
   if (Object.values(idx).some(i => i < 0)) {
     throw new Error('Missing required OPTD columns');
@@ -32,6 +33,7 @@ async function generateMapping() {
     name: string;
     city: string;
     country: string;
+    continent: string;
   }> = {};
 
   for (let i = 1; i < lines.length; i++) {
@@ -46,8 +48,9 @@ async function generateMapping() {
     const name = cols[idx.name];
     const city = cols[idx.city].split(',')[0].trim();
     const country = cols[idx.country];
-    if (!isNaN(lat) && !isNaN(lon) && name && city && country) {
-      geoMap[code] = { latitude: lat, longitude: lon, name, city, country };
+    const continent = cols[idx.continent];
+    if (!isNaN(lat) && !isNaN(lon) && name && city && country && continent) {
+      geoMap[code] = { latitude: lat, longitude: lon, name, city, country, continent };
     }
   }
 
@@ -76,9 +79,10 @@ async function generateMapping() {
     'export interface GeoEntry {',
     '  latitude: number;',
     '  longitude: number;',
-    '  name: string;', 
+    '  name: string;',
     '  city: string;',
     '  country: string;',
+    '  continent: string;',
     '}', '',
     'export const geo: Record<string, GeoEntry> = {',
     geoEntries,

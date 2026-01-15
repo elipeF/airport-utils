@@ -29,10 +29,19 @@ describe('getAirportInfo', () => {
       timezone: timezones[sample],
       ...geo[sample]
     });
+    expect(info.continent).toBeDefined();
+  });
+
+  it('returns all airports', () => {
+    const { getAllAirports } = require('../src/info');
+    const all = getAllAirports();
+    expect(all.length).toBeGreaterThan(0);
+    expect(all[0]).toHaveProperty('iata');
+    expect(all[0]).toHaveProperty('continent');
   });
 
   it('throws UnknownAirportError for missing IATA', () => {
     expect(() => getAirportInfo(invalidIata))
-        .toThrow(UnknownAirportError);
+      .toThrow(UnknownAirportError);
   });
 });

@@ -1,3 +1,3 @@
 export { convertToUTC, convertLocalToUTCByZone } from './converter';
-export { getAirportInfo, AirportInfo } from './info';
+export { getAirportInfo, getAllAirports, AirportInfo, Airport } from './info';
 export { UnknownAirportError, InvalidTimestampError, UnknownTimezoneError } from './errors';
