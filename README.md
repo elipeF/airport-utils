@@ -58,11 +58,17 @@ try {
   //   longitude: -73.7781,
   //   name: 'John F. Kennedy International Airport',
   //   city: 'New York',
-  //   country: 'US'
+  //   country: 'US',
+  //   continent: 'North America'
   // }
 } catch (err) {
   // handle UnknownAirportError
 }
+
+// Get all airports
+import { getAllAirports } from 'airport-utils';
+const airports = getAllAirports();
+console.log(airports.length); // > 10000
 ```
 
 ### API
@@ -85,7 +91,19 @@ export function getAirportInfo(iata: string): {
   name: string;
   city: string;
   country: string;
+  continent: string;
 };
+
+export function getAllAirports(): {
+  iata: string;
+  timezone: string;
+  latitude: number;
+  longitude: number;
+  name: string;
+  city: string;
+  country: string;
+  continent: string;
+}[];
 
 export class UnknownAirportError extends Error {}
 export class InvalidTimestampError extends Error {}
