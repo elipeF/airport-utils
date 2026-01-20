@@ -14,7 +14,7 @@ const buildCsv = (rows: string[]) => {
   return [header, ...rows].join('\n');
 };
 
-const globalAny = globalThis as any;
+const globalAny = globalThis as unknown as { fetch?: typeof globalThis.fetch };
 
 jest.mock('fs', () => {
   const realFs = jest.requireActual('fs');
@@ -65,7 +65,7 @@ describe('generateMapping', () => {
     const fetchMock = jest.fn(async () => ({
       ok: true,
       text: async () => csv
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const fs = await import('fs');
@@ -101,7 +101,7 @@ describe('generateMapping', () => {
     const fetchMock = jest.fn(async () => ({
       ok: true,
       text: async () => badCsv
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const prettier = await import('prettier');
@@ -118,7 +118,7 @@ describe('generateMapping', () => {
     const globalFetch = jest.fn(async () => ({
       ok: true,
       text: async () => csv
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     const previousFetch = globalAny.fetch;
     globalAny.fetch = globalFetch;
 
@@ -147,7 +147,7 @@ describe('generateMapping', () => {
       ok: false,
       statusText: 'Bad Gateway',
       text: async () => ''
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const prettier = await import('prettier');
@@ -161,7 +161,7 @@ describe('generateMapping', () => {
     const fetchMock = jest.fn(async () => ({
       ok: false,
       text: async () => ''
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const prettier = await import('prettier');
@@ -182,7 +182,7 @@ describe('generateMapping', () => {
     const fetchMock = jest.fn(async () => ({
       ok: true,
       text: async () => csv
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const fs = await import('fs');
@@ -197,10 +197,10 @@ describe('generateMapping', () => {
     );
     expect(geoWrite).toBeTruthy();
     const geoContents = String(geoWrite?.[1]);
-    expect(geoContents).toContain('\"AIR\"');
-    expect(geoContents).toContain('\"NTZ\"');
-    expect(geoContents).not.toContain('\"CIT\"');
-    expect(geoContents).not.toContain('\"BUS\"');
+    expect(geoContents).toContain('"AIR"');
+    expect(geoContents).toContain('"NTZ"');
+    expect(geoContents).not.toContain('"CIT"');
+    expect(geoContents).not.toContain('"BUS"');
   });
 
   it('uses default cwd/sourceUrl when omitted', async () => {
@@ -208,7 +208,7 @@ describe('generateMapping', () => {
     const fetchMock = jest.fn(async () => ({
       ok: true,
       text: async () => csv
-    })) as unknown as typeof fetch;
+    })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const prettier = await import('prettier');
