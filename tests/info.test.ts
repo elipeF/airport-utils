@@ -30,6 +30,7 @@ describe('getAirportInfo', () => {
       ...geo[sample]
     });
     expect(info.continent).toBeDefined();
+    expect(info.countryName).toBeDefined();
   });
 
   it('returns all airports', () => {

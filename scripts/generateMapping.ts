@@ -20,6 +20,7 @@ async function generateMapping() {
     name: header.indexOf('name'),
     city: header.indexOf('city_name_list'),
     country: header.indexOf('country_code'),
+    countryName: header.indexOf('country_name'),
     continent: header.indexOf('continent_name')
   };
   if (Object.values(idx).some(i => i < 0)) {
@@ -33,6 +34,7 @@ async function generateMapping() {
     name: string;
     city: string;
     country: string;
+    countryName: string;
     continent: string;
   }> = {};
 
@@ -48,9 +50,10 @@ async function generateMapping() {
     const name = cols[idx.name];
     const city = cols[idx.city].split(',')[0].trim();
     const country = cols[idx.country];
+    const countryName = cols[idx.countryName];
     const continent = cols[idx.continent];
-    if (!isNaN(lat) && !isNaN(lon) && name && city && country && continent) {
-      geoMap[code] = { latitude: lat, longitude: lon, name, city, country, continent };
+    if (!isNaN(lat) && !isNaN(lon) && name && city && country && countryName && continent) {
+      geoMap[code] = { latitude: lat, longitude: lon, name, city, country, countryName, continent };
     }
   }
 
@@ -82,6 +85,7 @@ async function generateMapping() {
     '  name: string;',
     '  city: string;',
     '  country: string;',
+    '  countryName: string;',
     '  continent: string;',
     '}', '',
     'export const geo: Record<string, GeoEntry> = {',

@@ -6,7 +6,7 @@ Convert local ISO 8601 timestamps to UTC using airport IATA codes, with airport 
 
 - **Local → UTC** conversion only (ISO 8601 in, ISO 8601 UTC out)
 - Built-in IATA→IANA timezone mapping (OPTD)
-- Built-in airport geo-data: latitude, longitude, name, city, country
+- Built-in airport geo-data: latitude, longitude, name, city, country, country name
 - TypeScript support, Node 20+
 - Synchronous API with custom error classes
 - Day.js (UTC & Timezone plugins) under the hood
@@ -59,6 +59,7 @@ try {
   //   name: 'John F. Kennedy International Airport',
   //   city: 'New York',
   //   country: 'US',
+  //   countryName: 'United States',
   //   continent: 'North America'
   // }
 } catch (err) {
@@ -91,6 +92,7 @@ export function getAirportInfo(iata: string): {
   name: string;
   city: string;
   country: string;
+  countryName: string;
   continent: string;
 };
 
@@ -102,6 +104,7 @@ export function getAllAirports(): {
   name: string;
   city: string;
   country: string;
+  countryName: string;
   continent: string;
 }[];
 
