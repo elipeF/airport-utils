@@ -9,6 +9,7 @@ export interface AirportInfo {
   name: string;
   city: string;
   country: string;
+  countryName: string;
   continent: string;
 }
 
