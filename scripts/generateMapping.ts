@@ -10,7 +10,7 @@ async function generateMapping() {
   if (!res.ok) throw new Error(`Fetch failed: ${res.statusText}`);
   const text = await res.text();
 
-  const lines = text.split('\n').filter(l => l.trim());
+  const lines = text.split('\n').filter((l) => l.trim());
   const header = lines[0].split('^');
   const idx = {
     iata: header.indexOf('iata_code'),
@@ -23,20 +23,23 @@ async function generateMapping() {
     countryName: header.indexOf('country_name'),
     continent: header.indexOf('continent_name')
   };
-  if (Object.values(idx).some(i => i < 0)) {
+  if (Object.values(idx).some((i) => i < 0)) {
     throw new Error('Missing required OPTD columns');
   }
 
   const timezonesMap: Record<string, string> = {};
-  const geoMap: Record<string, {
-    latitude: number;
-    longitude: number;
-    name: string;
-    city: string;
-    country: string;
-    countryName: string;
-    continent: string;
-  }> = {};
+  const geoMap: Record<
+    string,
+    {
+      latitude: number;
+      longitude: number;
+      name: string;
+      city: string;
+      country: string;
+      countryName: string;
+      continent: string;
+    }
+  > = {};
 
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split('^');
@@ -58,9 +61,9 @@ async function generateMapping() {
   }
 
   const sortedCodes = Object.keys(timezonesMap).sort();
-  const sortedTz = Object.fromEntries(sortedCodes.map(c => [c, timezonesMap[c]]));
+  const sortedTz = Object.fromEntries(sortedCodes.map((c) => [c, timezonesMap[c]]));
   const sortedGeo = Object.fromEntries(
-    sortedCodes.filter(c => geoMap[c]).map(c => [c, geoMap[c]])
+    sortedCodes.filter((c) => geoMap[c]).map((c) => [c, geoMap[c]])
   );
 
   const dir = path.resolve(path.dirname(import.meta.url.replace('file://', '')), '../src/mapping');
@@ -70,7 +73,7 @@ async function generateMapping() {
   const tzTs = [
     '// generated — do not edit',
     'export const timezones: Record<string, string> = ',
-    JSON.stringify(sortedTz, null, 2) + ';',
+    JSON.stringify(sortedTz, null, 2) + ';'
   ].join('\n');
   fs.writeFileSync(path.join(dir, 'timezones.ts'), tzTs + '\n');
 
@@ -87,17 +90,20 @@ async function generateMapping() {
     '  country: string;',
     '  countryName: string;',
     '  continent: string;',
-    '}', '',
+    '}',
+    '',
     'export const geo: Record<string, GeoEntry> = {',
     geoEntries,
-    '};',
+    '};'
   ].join('\n');
   fs.writeFileSync(path.join(dir, 'geo.ts'), geoTs + '\n');
 
-  console.log(`✅ Mappings: ${sortedCodes.length} timezones, ${Object.keys(sortedGeo).length} geo entries`);
+  console.log(
+    `✅ Mappings: ${sortedCodes.length} timezones, ${Object.keys(sortedGeo).length} geo entries`
+  );
 }
 
-generateMapping().catch(err => {
+generateMapping().catch((err) => {
   console.error(err);
   process.exit(1);
 });
