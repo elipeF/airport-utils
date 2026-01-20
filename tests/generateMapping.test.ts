@@ -75,8 +75,8 @@ describe('generateMapping', () => {
     const { generateMapping } = await import('../scripts/generateMapping');
     await generateMapping();
 
-    expect((fs.default.mkdirSync as jest.Mock)).toHaveBeenCalled();
-    expect((fs.default.writeFileSync as jest.Mock)).toHaveBeenCalledTimes(2);
+    expect(fs.default.mkdirSync as jest.Mock).toHaveBeenCalled();
+    expect(fs.default.writeFileSync as jest.Mock).toHaveBeenCalledTimes(2);
     expect(prettier.default.resolveConfig).toHaveBeenCalledWith(expect.any(String), {
       editorconfig: true
     });

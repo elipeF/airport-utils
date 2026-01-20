@@ -79,15 +79,7 @@ export async function generateMapping() {
     const country = cols[idx.country];
     const countryName = cols[idx.countryName];
     const continent = cols[idx.continent];
-    if (
-      !isNaN(lat) &&
-      !isNaN(lon) &&
-      name &&
-      city &&
-      country &&
-      countryName &&
-      continent
-    ) {
+    if (!isNaN(lat) && !isNaN(lon) && name && city && country && countryName && continent) {
       geoMap[code] = { latitude: lat, longitude: lon, name, city, country, countryName, continent };
     }
   }
