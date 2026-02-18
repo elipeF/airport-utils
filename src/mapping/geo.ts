@@ -7237,15 +7237,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Republic of the Congo',
     continent: 'Africa'
   },
-  BOF: {
-    latitude: 38.84289,
-    longitude: -77.01553,
-    name: 'Joint Base Anacostia–Bolling Heliport',
-    city: 'Washington',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
   BOG: {
     latitude: 4.70159,
     longitude: -74.14695,
@@ -12493,6 +12484,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'France',
     continent: 'Europe'
   },
+  CQL: {
+    latitude: 29.74694,
+    longitude: 106.79936,
+    name: 'Longxing Airport',
+    city: 'Chongqing',
+    country: 'CN',
+    countryName: 'China',
+    continent: 'Asia'
+  },
   CQM: {
     latitude: 38.85856,
     longitude: -3.97602,
@@ -12627,15 +12627,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'PH',
     countryName: 'Philippines',
     continent: 'Asia'
-  },
-  CRN: {
-    latitude: 44.17049,
-    longitude: 28.63196,
-    name: 'Constanta Bus Station',
-    city: 'Constanţa',
-    country: 'RO',
-    countryName: 'Romania',
-    continent: 'Europe'
   },
   CRO: {
     latitude: 36.1,
@@ -12843,15 +12834,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'DE',
     countryName: 'Germany',
     continent: 'Europe'
-  },
-  CSP: {
-    latitude: 58.19925,
-    longitude: -136.63994,
-    name: 'Cape Spencer Coast Guard Heliport',
-    city: 'Cap Spencer',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
   },
   CSQ: {
     latitude: 41.07,
@@ -14405,7 +14387,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 30.1897,
     longitude: 78.1803,
     name: 'Jolly Grant Airport',
-    city: 'Dehra Dūn',
+    city: 'Dehradun',
     country: 'IN',
     countryName: 'India',
     continent: 'Asia'
@@ -14589,15 +14571,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'CA',
     countryName: 'Canada',
     continent: 'North America'
-  },
-  DGG: {
-    latitude: -9.5127,
-    longitude: 147.05024,
-    name: 'Fisherman’s Island Airfield (historical)',
-    city: 'Daugo Island',
-    country: 'PG',
-    countryName: 'Papua New Guinea',
-    continent: 'Oceania'
   },
   DGH: {
     latitude: 24.44444,
@@ -14886,15 +14859,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'VN',
     countryName: 'Vietnam',
     continent: 'Asia'
-  },
-  DIO: {
-    latitude: 65.75005,
-    longitude: -168.94981,
-    name: 'Diomede Island Airport',
-    city: 'Diomede',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
   },
   DIP: {
     latitude: 12.05,
@@ -16836,15 +16800,6 @@ export const geo: Record<string, GeoEntry> = {
     longitude: -149.806503,
     name: 'Elmendorf Air Force Base',
     city: 'Anchorage',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
-  EDG: {
-    latitude: 39.391,
-    longitude: -76.29103,
-    name: 'Weide Army Heliport',
-    city: 'Edgewood',
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
@@ -19000,15 +18955,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'United States',
     continent: 'North America'
   },
-  FCT: {
-    latitude: 46.67,
-    longitude: -120.5,
-    name: 'Yakima WA US Vagabond Ahp',
-    city: 'Yakima',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
   FCY: {
     latitude: 34.94279,
     longitude: -90.77427,
@@ -19149,15 +19095,6 @@ export const geo: Record<string, GeoEntry> = {
     longitude: -96.5,
     name: 'Fremont Municipal Airport',
     city: 'Fremont',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
-  FEW: {
-    latitude: 41.14927,
-    longitude: -104.86216,
-    name: 'Warren Air Force Base',
-    city: 'Cheyenne',
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
@@ -20090,9 +20027,9 @@ export const geo: Record<string, GeoEntry> = {
     continent: 'North America'
   },
   FRT: {
-    latitude: -41.12267,
-    longitude: -73.05341,
-    name: 'El Avellano Airport',
+    latitude: -41.13298,
+    longitude: -73.0658,
+    name: 'Aeródromo Frutillar',
     city: 'Frutillar Alto',
     country: 'CL',
     countryName: 'Chile',
@@ -20151,6 +20088,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
+  },
+  FSH: {
+    latitude: 2.27257,
+    longitude: 97.96745,
+    name: 'Syekh Hamzah Fansyuri Airport',
+    city: 'Singkil',
+    country: 'ID',
+    countryName: 'Indonesia',
+    continent: 'Asia'
   },
   FSI: {
     latitude: 34.64908,
@@ -21291,15 +21237,6 @@ export const geo: Record<string, GeoEntry> = {
     longitude: -108.1,
     name: 'South Big Horn County Airport',
     city: 'Greybull',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
-  GFA: {
-    latitude: 47.5,
-    longitude: -111.2,
-    name: 'Malmstrom Air Force Base',
-    city: 'Great Falls',
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
@@ -23851,6 +23788,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'United States',
     continent: 'North America'
   },
+  HBD: {
+    latitude: -6.32,
+    longitude: 142.4893,
+    name: 'Habi Airport',
+    city: 'Habi',
+    country: 'PG',
+    countryName: 'Papua New Guinea',
+    continent: 'Oceania'
+  },
   HBE: {
     latitude: 30.917669,
     longitude: 29.696408,
@@ -25533,15 +25479,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'DZ',
     countryName: 'Algeria',
     continent: 'Africa'
-  },
-  HRN: {
-    latitude: -23.44225,
-    longitude: 151.91033,
-    name: 'Heron Island Seaplane Base',
-    city: 'Heron Island',
-    country: 'AU',
-    countryName: 'Australia',
-    continent: 'Oceania'
   },
   HRO: {
     latitude: 36.261519,
@@ -29323,15 +29260,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Angola',
     continent: 'Africa'
   },
-  JMC: {
-    latitude: 37.85,
-    longitude: -122.5,
-    name: 'Commodore Center Heliport',
-    city: 'Sausalito',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
   JMJ: {
     latitude: 22.41572,
     longitude: 99.78646,
@@ -31419,6 +31347,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'IR',
     countryName: 'Iran',
     continent: 'Asia'
+  },
+  KII: {
+    latitude: -9.00653,
+    longitude: 142.69806,
+    name: 'Kibuli Airstrip',
+    city: 'Kibuli',
+    country: 'PG',
+    countryName: 'Papua New Guinea',
+    continent: 'Oceania'
   },
   KIJ: {
     latitude: 37.95589,
@@ -35164,15 +35101,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Germany',
     continent: 'Europe'
   },
-  LHB: {
-    latitude: 54.23764,
-    longitude: -165.59349,
-    name: 'Lost Harbor Seaplane Base',
-    city: 'Lost Harbor (historical)',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
-  },
   LHE: {
     latitude: 31.52156,
     longitude: 74.40359,
@@ -36864,6 +36792,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'LY',
     countryName: 'Libya',
     continent: 'Africa'
+  },
+  LTG: {
+    latitude: 28.2,
+    longitude: 85.583,
+    name: 'Langtang Airport',
+    city: 'Langtang',
+    country: 'NP',
+    countryName: 'Nepal',
+    continent: 'Asia'
   },
   LTH: {
     latitude: 10.77329,
@@ -39151,15 +39088,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Guyana',
     continent: 'South America'
   },
-  MHB: {
-    latitude: -36.97,
-    longitude: 174.9,
-    name: 'Auckland NZ Mechanics Bay Heli',
-    city: 'Auckland',
-    country: 'NZ',
-    countryName: 'New Zealand',
-    continent: 'Oceania'
-  },
   MHC: {
     latitude: -42.33847,
     longitude: -73.71547,
@@ -40996,6 +40924,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Norway',
     continent: 'Europe'
   },
+  MQO: {
+    latitude: -8.70917,
+    longitude: 142.64972,
+    name: 'Malam Airport',
+    city: 'Malam',
+    country: 'PG',
+    countryName: 'Papua New Guinea',
+    continent: 'Oceania'
+  },
   MQP: {
     latitude: -25.39,
     longitude: 31.1,
@@ -41752,6 +41689,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'United States',
     continent: 'North America'
   },
+  MUJ: {
+    latitude: 5.8646,
+    longitude: 35.7485,
+    name: 'Mui River Airport',
+    city: 'Mui',
+    country: 'ET',
+    countryName: 'Ethiopia',
+    continent: 'Africa'
+  },
   MUK: {
     latitude: -20.1361,
     longitude: -157.345,
@@ -42156,6 +42102,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
+  },
+  MWI: {
+    latitude: -5.1283,
+    longitude: 143.48462,
+    name: 'Maramuni Airport',
+    city: 'Maramuni',
+    country: 'PG',
+    countryName: 'Papua New Guinea',
+    continent: 'Oceania'
   },
   MWJ: {
     latitude: 6.55,
@@ -42634,6 +42589,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Tanzania',
     continent: 'Africa'
   },
+  MYX: {
+    latitude: -7.21167,
+    longitude: 146.01936,
+    name: 'Menyamya Airport',
+    city: 'Menyamya',
+    country: 'PG',
+    countryName: 'Papua New Guinea',
+    continent: 'Oceania'
+  },
   MYY: {
     latitude: 4.322014,
     longitude: 113.986806,
@@ -42839,6 +42803,15 @@ export const geo: Record<string, GeoEntry> = {
     city: 'Mecheria',
     country: 'DZ',
     countryName: 'Algeria',
+    continent: 'Africa'
+  },
+  MZY: {
+    latitude: -34.15873,
+    longitude: 22.05571,
+    name: 'Mossel Bay Airport',
+    city: 'Mossel Bay',
+    country: 'ZA',
+    countryName: 'South Africa',
     continent: 'Africa'
   },
   MZZ: {
@@ -43524,15 +43497,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'RU',
     countryName: 'Russia',
     continent: 'Europe'
-  },
-  NES: {
-    latitude: 40.74401,
-    longitude: -73.97044,
-    name: 'East 34th Street Ferry Landing',
-    city: 'New York City',
-    country: 'US',
-    countryName: 'United States',
-    continent: 'North America'
   },
   NET: {
     latitude: 24.31425,
@@ -45368,15 +45332,6 @@ export const geo: Record<string, GeoEntry> = {
     city: 'Argentia',
     country: 'CA',
     countryName: 'Canada',
-    continent: 'North America'
-  },
-  NWS: {
-    latitude: 40.7032,
-    longitude: -74.00652,
-    name: 'Pier 11 - Wall St Seaplane Base',
-    city: 'New York City',
-    country: 'US',
-    countryName: 'United States',
     continent: 'North America'
   },
   NWU: {
@@ -49005,6 +48960,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
+  },
+  PGN: {
+    latitude: -6.386,
+    longitude: 144.1084,
+    name: 'Pangia Airport',
+    city: 'Pangia',
+    country: 'PG',
+    countryName: 'Papua New Guinea',
+    continent: 'Oceania'
   },
   PGQ: {
     latitude: 0.91744,
@@ -53187,6 +53151,15 @@ export const geo: Record<string, GeoEntry> = {
     longitude: 143.11501,
     name: 'Richmond Airport',
     city: 'Richmond',
+    country: 'AU',
+    countryName: 'Australia',
+    continent: 'Oceania'
+  },
+  RCN: {
+    latitude: -35.81225,
+    longitude: 137.73637,
+    name: 'American River Airpark',
+    city: 'American River',
     country: 'AU',
     countryName: 'Australia',
     continent: 'Oceania'
@@ -59509,6 +59482,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Philippines',
     continent: 'Asia'
   },
+  SUH: {
+    latitude: 22.53674,
+    longitude: 59.47934,
+    name: 'Sur Airport',
+    city: 'Sur',
+    country: 'OM',
+    countryName: 'Oman',
+    continent: 'Asia'
+  },
   SUI: {
     latitude: 42.87,
     longitude: 41.12,
@@ -59895,6 +59877,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'BR',
     countryName: 'Brazil',
     continent: 'South America'
+  },
+  SWN: {
+    latitude: 29.99139,
+    longitude: 77.40797,
+    name: 'Sarsawa Airport',
+    city: 'Sahiwal',
+    country: 'IN',
+    countryName: 'India',
+    continent: 'Asia'
   },
   SWO: {
     latitude: 36.161222,
@@ -61776,15 +61767,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
-  },
-  THW: {
-    latitude: 8.56443,
-    longitude: 81.23201,
-    name: 'Trincomalee Harbour Seaplane Base',
-    city: 'Trincomalee',
-    country: 'LK',
-    countryName: 'Sri Lanka',
-    continent: 'Asia'
   },
   THX: {
     latitude: 65.79663,
@@ -64229,7 +64211,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 5.04699,
     longitude: 119.743,
     name: 'Sanga Sanga Airport',
-    city: 'Tawi-Tawi Island',
+    city: 'Bongao',
     country: 'PH',
     countryName: 'Philippines',
     continent: 'Asia'
@@ -70642,15 +70624,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Canada',
     continent: 'North America'
   },
-  YAW: {
-    latitude: 44.63972,
-    longitude: -63.49944,
-    name: 'Shearwater Airport',
-    city: 'Halifax',
-    country: 'CA',
-    countryName: 'Canada',
-    continent: 'North America'
-  },
   YAX: {
     latitude: 53.84848,
     longitude: -89.57849,
@@ -71214,15 +71187,6 @@ export const geo: Record<string, GeoEntry> = {
     longitude: -84.09845,
     name: 'Bar River Airport',
     city: 'Bar River',
-    country: 'CA',
-    countryName: 'Canada',
-    continent: 'North America'
-  },
-  YED: {
-    latitude: 53.67434,
-    longitude: -113.4783,
-    name: 'CFB Edmonton',
-    city: 'Edmonton',
     country: 'CA',
     countryName: 'Canada',
     continent: 'North America'
@@ -72298,15 +72262,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'China',
     continent: 'Asia'
   },
-  YLO: {
-    latitude: 49.80598,
-    longitude: -99.64527,
-    name: 'CFB Shilo',
-    city: 'Shilo',
-    country: 'CA',
-    countryName: 'Canada',
-    continent: 'North America'
-  },
   YLQ: {
     latitude: 47.40666,
     longitude: -72.78889,
@@ -72861,15 +72816,6 @@ export const geo: Record<string, GeoEntry> = {
     longitude: -75.66917,
     name: 'Ottawa Macdonald-Cartier International Airport',
     city: 'Ottawa',
-    country: 'CA',
-    countryName: 'Canada',
-    continent: 'North America'
-  },
-  YOY: {
-    latitude: 46.9014,
-    longitude: -71.50246,
-    name: 'CFB Valcartier',
-    city: 'Shannon',
     country: 'CA',
     countryName: 'Canada',
     continent: 'North America'
@@ -73446,15 +73392,6 @@ export const geo: Record<string, GeoEntry> = {
     longitude: -71.691389,
     name: 'Sherbrooke Airport',
     city: 'Sherbrooke',
-    country: 'CA',
-    countryName: 'Canada',
-    continent: 'North America'
-  },
-  YSD: {
-    latitude: 50.27368,
-    longitude: -111.18928,
-    name: 'CFB Suffield',
-    city: 'Suffield',
     country: 'CA',
     countryName: 'Canada',
     continent: 'North America'
@@ -74809,15 +74746,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Laos',
     continent: 'Asia'
   },
-  ZCD: {
-    latitude: 49.9198,
-    longitude: 10.9128,
-    name: 'Bamberg',
-    city: 'Bamberg',
-    country: 'DE',
-    countryName: 'Germany',
-    continent: 'Europe'
-  },
   ZCL: {
     latitude: 22.89711,
     longitude: -102.68689,
@@ -75015,15 +74943,6 @@ export const geo: Record<string, GeoEntry> = {
     country: 'BD',
     countryName: 'Bangladesh',
     continent: 'Asia'
-  },
-  ZHO: {
-    latitude: 54.43808,
-    longitude: -126.77789,
-    name: 'Houston Airport',
-    city: 'Houston',
-    country: 'CA',
-    countryName: 'Canada',
-    continent: 'North America'
   },
   ZHP: {
     latitude: 55.39361,
