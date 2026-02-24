@@ -41977,15 +41977,6 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'French Polynesia',
     continent: 'Oceania'
   },
-  MVU: {
-    latitude: -14.77302,
-    longitude: 143.50492,
-    name: 'Musgrave Airport',
-    city: 'Musgrave',
-    country: 'AU',
-    countryName: 'Australia',
-    continent: 'Oceania'
-  },
   MVV: {
     latitude: 45.821,
     longitude: 6.652,
