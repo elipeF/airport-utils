@@ -60475,7 +60475,7 @@ export const geo: Record<string, GeoEntry> = {
   SZR: {
     latitude: 42.37668,
     longitude: 25.65514,
-    name: 'Kolyu Ganchevo Airport',
+    name: 'Stara Zagora Airport',
     city: 'Stara Zagora',
     country: 'BG',
     countryName: 'Bulgaria',
