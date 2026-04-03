@@ -59396,7 +59396,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 45.10916,
     longitude: 42.11278,
     name: 'Stavropol Shpakovskoye Airport',
-    city: 'Stavropol’',
+    city: 'Stavropol',
     country: 'RU',
     countryName: 'Russia',
     continent: 'Europe'
@@ -60224,7 +60224,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 22.83,
     longitude: 101,
     name: 'Simao Airport',
-    city: 'Simao',
+    city: "Pu'er",
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -60475,7 +60475,7 @@ export const geo: Record<string, GeoEntry> = {
   SZR: {
     latitude: 42.37668,
     longitude: 25.65514,
-    name: 'Kolyu Ganchevo Airport',
+    name: 'Stara Zagora Airport',
     city: 'Stara Zagora',
     country: 'BG',
     countryName: 'Bulgaria',
