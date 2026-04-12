@@ -2778,6 +2778,7 @@ export const timezones: Record<string, string> = {
   HMV: 'Europe/Stockholm',
   HMX: 'Asia/Shanghai',
   HMY: 'Asia/Seoul',
+  HMZ: 'Asia/Shanghai',
   HNA: 'Asia/Tokyo',
   HNB: 'America/Indiana/Vincennes',
   HNC: 'America/New_York',
