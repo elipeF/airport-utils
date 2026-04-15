@@ -13,24 +13,21 @@ concurrency:
   group: update-mapping
   cancel-in-progress: false
 
-env:
-  # Single token for commits, PR creation, and auto-merge
-  BOT_TOKEN: ${{ secrets.BOT_MAINTAINER_TOKEN != '' && secrets.BOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
 
 jobs:
   refresh-mapping:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ env.BOT_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -53,9 +50,9 @@ jobs:
       - name: Create or update PR
         if: env.no_changes != 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ env.BOT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(mapping): daily update of mapping files"
           branch: chore/mapping-auto
           title: "chore(mapping): daily update of mapping files"
@@ -63,10 +60,4 @@ jobs:
           labels: dependencies
           delete-branch: true
 
-      - name: Enable auto-merge (squash)
-        if: steps.cpr.outputs.pull-request-number
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ env.BOT_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
+
