@@ -8,19 +8,21 @@ const external = [
   ...Object.keys(pkg.peerDependencies || {}),
 ];
 
+const sharedPlugins = () => [
+  resolve(),
+  typescript({
+    tsconfig: './tsconfig.json',
+    declaration: false,
+    compilerOptions: { outDir: undefined }
+  })
+];
+
 export default [
   // ESM build
   {
     input: 'src/index.ts',
     external,
-    plugins: [
-      resolve(),
-      typescript({
-        tsconfig: './tsconfig.json',
-        declaration: false,
-        compilerOptions: { outDir: undefined }
-      })
-    ],
+    plugins: sharedPlugins(),
     output: {
       dir: 'dist/esm',
       format: 'esm',
@@ -34,20 +36,13 @@ export default [
   {
     input: 'src/index.ts',
     external,
-    plugins: [
-      resolve(),
-      typescript({
-        tsconfig: './tsconfig.json',
-        declaration: false,
-        compilerOptions: { outDir: undefined }
-      })
-    ],
+    plugins: sharedPlugins(),
     output: {
       dir: 'dist/cjs',
       format: 'cjs',
       preserveModules: true,
       preserveModulesRoot: 'src',
-      entryFileNames: '[name].js'
+      entryFileNames: '[name].cjs'
     }
   }
 ];

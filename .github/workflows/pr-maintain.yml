@@ -4,7 +4,7 @@ on:
   pull_request_target:
     types: [opened, reopened, synchronize, ready_for_review]
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "0 */4 * * *"
   workflow_dispatch:
 
 permissions:
