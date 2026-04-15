@@ -4,10 +4,20 @@ updates:
     directory: "/"                         # Location of package.json
     schedule:
       interval: "daily"                   # Check every day
-    open-pull-requests-limit: 10          # Max 10 open PRs
+    open-pull-requests-limit: 20          # Max 20 open PRs
     labels:
       - "dependencies"                    # Attach this label
     versioning-strategy: "auto"           # Allow patch, minor & major bumps
     commit-message:
       prefix: "chore(deps)"
       include: scope
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"

@@ -1,0 +1,38 @@
+name: Automated NPM Audit Fix
+
+on:
+  schedule:
+    - cron: '0 4 * * 1' # Every Monday at 04:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  audit-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit fix
+        run: npm audit fix
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(deps): apply npm audit fix"
+          branch: chore/audit-fix-auto
+          title: "chore(deps): apply npm audit fix"
+          body: "Automated \`npm audit fix\` to resolve vulnerable transitive dependencies."
+          labels: dependencies
+          delete-branch: true
