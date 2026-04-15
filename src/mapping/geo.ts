@@ -25012,6 +25012,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'South Korea',
     continent: 'Asia'
   },
+  HMZ: {
+    latitude: 23.46546,
+    longitude: 103.34922,
+    name: 'Honghe Mengzi Airport',
+    city: 'Mengzi',
+    country: 'CN',
+    countryName: 'China',
+    continent: 'Asia'
+  },
   HNA: {
     latitude: 39.428611,
     longitude: 141.135278,
@@ -54644,7 +54653,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 47.49111,
     longitude: 39.92878,
     name: 'Platov International Airport',
-    city: 'Rostov-na-Donu',
+    city: 'Rostov-on-Don',
     country: 'RU',
     countryName: 'Russia',
     continent: 'Europe'
@@ -59396,7 +59405,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 45.10916,
     longitude: 42.11278,
     name: 'Stavropol Shpakovskoye Airport',
-    city: 'Stavropol’',
+    city: 'Stavropol',
     country: 'RU',
     countryName: 'Russia',
     continent: 'Europe'
@@ -60224,7 +60233,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 22.83,
     longitude: 101,
     name: 'Simao Airport',
-    city: 'Simao',
+    city: "Pu'er",
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -60475,7 +60484,7 @@ export const geo: Record<string, GeoEntry> = {
   SZR: {
     latitude: 42.37668,
     longitude: 25.65514,
-    name: 'Kolyu Ganchevo Airport',
+    name: 'Stara Zagora Airport',
     city: 'Stara Zagora',
     country: 'BG',
     countryName: 'Bulgaria',
@@ -66515,7 +66524,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 17.515,
     longitude: 106.59056,
     name: 'Dong Hoi Airport',
-    city: 'Động Hỏi',
+    city: 'Đồng Hới',
     country: 'VN',
     countryName: 'Vietnam',
     continent: 'Asia'
