@@ -5,7 +5,7 @@ import type * as AirportUtils from '../src/index';
 
 function ensureBuild(): void {
   const esmPath = path.resolve(__dirname, '../dist/esm/index.js');
-  const cjsPath = path.resolve(__dirname, '../dist/cjs/index.js');
+  const cjsPath = path.resolve(__dirname, '../dist/cjs/index.cjs');
   if (fs.existsSync(esmPath) && fs.existsSync(cjsPath)) return;
   execSync('npm run build', { stdio: 'inherit' });
 }
@@ -16,7 +16,7 @@ describe('CommonJS build (dist/cjs)', () => {
     ensureBuild();
   });
 
-  const cjs = require('../dist/cjs/index.js') as typeof AirportUtils;
+  const cjs = require('../dist/cjs/index.cjs') as typeof AirportUtils;
   const { convertToUTC, convertLocalToUTCByZone, getAirportInfo } = cjs;
 
   it('convertToUTC works in CommonJS build', () => {
