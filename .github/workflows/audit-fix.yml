@@ -33,6 +33,6 @@ jobs:
           commit-message: "chore(deps): apply npm audit fix"
           branch: chore/audit-fix-auto
           title: "chore(deps): apply npm audit fix"
-          body: "Automated \`npm audit fix\` to resolve vulnerable transitive dependencies."
+          body: "Automated `npm audit fix` to resolve vulnerable transitive dependencies."
           labels: dependencies
           delete-branch: true
