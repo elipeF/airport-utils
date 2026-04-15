@@ -29,7 +29,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BOT_MAINTAINER_TOKEN != '' && secrets.BOT_MAINTAINER_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "chore(deps): apply npm audit fix"
           branch: chore/audit-fix-auto
           title: "chore(deps): apply npm audit fix"
