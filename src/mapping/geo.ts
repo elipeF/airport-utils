@@ -6665,7 +6665,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 35.75211,
     longitude: 6.30859,
     name: 'Mostépha Ben Boulaid Airport',
-    city: 'Batna City',
+    city: 'Batna',
     country: 'DZ',
     countryName: 'Algeria',
     continent: 'Africa'
