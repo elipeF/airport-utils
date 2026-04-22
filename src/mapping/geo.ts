@@ -6665,7 +6665,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 35.75211,
     longitude: 6.30859,
     name: 'Mostépha Ben Boulaid Airport',
-    city: 'Batna City',
+    city: 'Batna',
     country: 'DZ',
     countryName: 'Algeria',
     continent: 'Africa'
@@ -27666,6 +27666,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'CL',
     countryName: 'Chile',
     continent: 'South America'
+  },
+  IQR: {
+    latitude: 9.21334,
+    longitude: 123.47183,
+    name: 'Siquijor Airport',
+    city: 'Siquijor',
+    country: 'PH',
+    countryName: 'Philippines',
+    continent: 'Asia'
   },
   IQT: {
     latitude: -3.78474,
