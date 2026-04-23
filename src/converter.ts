@@ -1,12 +1,14 @@
-import { TZDate } from '@date-fns/tz';
+import { tzOffset, tzScan } from '@date-fns/tz';
 import { timezones } from './mapping/timezones';
 import { UnknownAirportError, InvalidTimestampError, UnknownTimezoneError } from './errors';
 
 const ISO_LOCAL_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/;
 
 type LocalDateTimeParts = [number, number, number, number, number, number];
+type InvalidLocalInterval = { start: number; end: number };
 
 const VALID_TIMEZONE_CACHE = new Map<string, boolean>();
+const INVALID_LOCAL_INTERVAL_CACHE = new Map<string, InvalidLocalInterval[]>();
 
 function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -51,23 +53,92 @@ function assertValidTimezone(timeZone: string): void {
   }
 }
 
+function localPartsToNaiveUtcMs(parts: LocalDateTimeParts): number {
+  const [year, month, day, hour, minute, second] = parts;
+  return Date.UTC(year, month, day, hour, minute, second);
+}
+
+function resolveUtcMs(localNaiveMs: number, timeZone: string): number {
+  let utcMs = localNaiveMs;
+  for (let i = 0; i < 4; i++) {
+    const offsetMinutes = tzOffset(timeZone, new Date(utcMs));
+    if (!Number.isFinite(offsetMinutes)) {
+      throw new RangeError(`Invalid timezone offset for: ${timeZone}`);
+    }
+
+    const nextUtcMs = localNaiveMs - offsetMinutes * 60_000;
+    if (nextUtcMs === utcMs) return utcMs;
+    utcMs = nextUtcMs;
+  }
+
+  return utcMs;
+}
+
+function getInvalidLocalIntervals(timeZone: string, year: number): InvalidLocalInterval[] {
+  const cacheKey = `${timeZone}:${year}`;
+  const cached = INVALID_LOCAL_INTERVAL_CACHE.get(cacheKey);
+  if (cached) return cached;
+
+  const yearStart = Date.UTC(year, 0, 1, 0, 0, 0);
+  const yearEnd = Date.UTC(year + 1, 0, 1, 0, 0, 0);
+  const transitions = tzScan(timeZone, {
+    start: new Date(Date.UTC(year - 1, 11, 31, 0, 0, 0)),
+    end: new Date(Date.UTC(year + 1, 0, 2, 0, 0, 0))
+  });
+
+  const intervals = transitions
+    .map((transition) => {
+      const previousOffset = transition.offset - transition.change;
+      if (transition.change < 0) {
+        return {
+          start: transition.date.getTime() + transition.offset * 60_000,
+          end: transition.date.getTime() + previousOffset * 60_000
+        };
+      }
+      return {
+        start: transition.date.getTime() + previousOffset * 60_000,
+        end: transition.date.getTime() + transition.offset * 60_000
+      };
+    })
+    .filter((interval) => interval.end > yearStart && interval.start < yearEnd);
+
+  INVALID_LOCAL_INTERVAL_CACHE.set(cacheKey, intervals);
+  return intervals;
+}
+
+function assertResolvableLocalTime(
+  localIso: string,
+  timeZone: string,
+  year: number,
+  localNaiveMs: number
+): void {
+  const intervals = getInvalidLocalIntervals(timeZone, year);
+  for (const interval of intervals) {
+    if (localNaiveMs >= interval.start && localNaiveMs < interval.end) {
+      throw new InvalidTimestampError(localIso);
+    }
+  }
+}
+
 function toUtcIso(
   localIso: string,
   timeZone: string,
   onTimeZoneError: (err: unknown) => Error
 ): string {
-  const [year, month, day, hour, minute, second] = parseLocalIsoStrict(localIso);
+  const parts = parseLocalIsoStrict(localIso);
+  const [year] = parts;
+  const localNaiveMs = localPartsToNaiveUtcMs(parts);
+  assertResolvableLocalTime(localIso, timeZone, year, localNaiveMs);
 
-  let zoned: TZDate;
+  let utcMs: number;
   try {
-    zoned = TZDate.tz(timeZone, year, month, day, hour, minute, second);
+    utcMs = resolveUtcMs(localNaiveMs, timeZone);
   } catch (err) {
     throw onTimeZoneError(err);
   }
-  if (isNaN(zoned.getTime())) throw new InvalidTimestampError(localIso);
 
   // Strip ".000" from the ISO string
-  return new Date(zoned.getTime()).toISOString().replace('.000Z', 'Z');
+  return new Date(utcMs).toISOString().replace('.000Z', 'Z');
 }
 
 /**

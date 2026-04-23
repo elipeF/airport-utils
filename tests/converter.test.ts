@@ -1,11 +1,28 @@
-import { TZDate } from '@date-fns/tz';
+import * as dateFnsTz from '@date-fns/tz';
 import { convertToUTC, convertLocalToUTCByZone } from '../src/converter';
 import { UnknownAirportError, InvalidTimestampError, UnknownTimezoneError } from '../src/errors';
 import { getInvalidIata } from './helpers';
 
+const realDateFnsTz = jest.requireActual('@date-fns/tz') as typeof dateFnsTz;
+
+jest.mock('@date-fns/tz', () => {
+  const actual = jest.requireActual('@date-fns/tz') as typeof dateFnsTz;
+  return {
+    ...actual,
+    tzOffset: jest.fn(actual.tzOffset),
+    tzScan: jest.fn(actual.tzScan)
+  };
+});
+
 const invalidIata = getInvalidIata();
+const tzOffsetMock = dateFnsTz.tzOffset as jest.MockedFunction<typeof dateFnsTz.tzOffset>;
 
 describe('convertToUTC', () => {
+  beforeEach(() => {
+    tzOffsetMock.mockReset();
+    tzOffsetMock.mockImplementation(realDateFnsTz.tzOffset);
+  });
+
   it('converts JFK local time (UTC–4 in May) correctly', () => {
     expect(convertToUTC('2025-05-02T14:30', 'JFK')).toBe('2025-05-02T18:30:00Z');
   });
@@ -32,27 +49,35 @@ describe('convertToUTC', () => {
   });
 
   describe('error branches', () => {
-    it('throws InvalidTimestampError if TZDate.tz throws', () => {
-      const spy = jest.spyOn(TZDate, 'tz').mockImplementation(() => {
+    it('throws InvalidTimestampError if tzOffset throws', () => {
+      tzOffsetMock.mockImplementation(() => {
         throw new Error('forced');
       });
       expect(() => convertToUTC('2025-05-02T14:30', 'JFK')).toThrow(InvalidTimestampError);
-      spy.mockRestore();
     });
 
-    it('throws InvalidTimestampError if TZDate.tz returns invalid Date', () => {
-      const spy = jest.spyOn(TZDate, 'tz').mockImplementation(() => {
-        const d = new Date(NaN) as unknown as TZDate;
-        Object.setPrototypeOf(d, TZDate.prototype);
-        return d;
-      });
+    it('throws InvalidTimestampError if tzOffset returns NaN', () => {
+      tzOffsetMock.mockReturnValue(NaN);
       expect(() => convertToUTC('2025-05-02T14:30', 'JFK')).toThrow(InvalidTimestampError);
-      spy.mockRestore();
+    });
+
+    it('returns the last UTC candidate if offset solving does not converge within the loop budget', () => {
+      tzOffsetMock
+        .mockReturnValueOnce(60)
+        .mockReturnValueOnce(0)
+        .mockReturnValueOnce(60)
+        .mockReturnValueOnce(0);
+      expect(convertToUTC('2025-05-02T14:30', 'JFK')).toBe('2025-05-02T14:30:00Z');
     });
   });
 });
 
 describe('convertLocalToUTCByZone', () => {
+  beforeEach(() => {
+    tzOffsetMock.mockReset();
+    tzOffsetMock.mockImplementation(realDateFnsTz.tzOffset);
+  });
+
   it('converts London local time to UTC', () => {
     expect(convertLocalToUTCByZone('2025-05-02T14:30:00', 'Europe/London')).toBe(
       '2025-05-02T13:30:00Z'
@@ -62,6 +87,33 @@ describe('convertLocalToUTCByZone', () => {
   it('accepts leap day dates', () => {
     expect(convertLocalToUTCByZone('2024-02-29T12:00:00', 'Europe/London')).toBe(
       '2024-02-29T12:00:00Z'
+    );
+  });
+
+  it('rejects nonexistent local times during DST spring-forward transitions', () => {
+    expect(() => convertLocalToUTCByZone('2025-03-09T02:30:00', 'America/New_York')).toThrow(
+      InvalidTimestampError
+    );
+    expect(() => convertLocalToUTCByZone('2025-03-30T01:30:00', 'Europe/London')).toThrow(
+      InvalidTimestampError
+    );
+  });
+
+  it('accepts valid local times immediately after DST spring-forward transitions', () => {
+    expect(convertLocalToUTCByZone('2025-03-09T03:30:00', 'America/New_York')).toBe(
+      '2025-03-09T07:30:00Z'
+    );
+  });
+
+  it('rejects ambiguous local times during DST fall-back transitions', () => {
+    expect(() => convertLocalToUTCByZone('2025-11-02T01:30:00', 'America/New_York')).toThrow(
+      InvalidTimestampError
+    );
+  });
+
+  it('accepts unambiguous local times after DST fall-back transitions', () => {
+    expect(convertLocalToUTCByZone('2025-11-02T03:30:00', 'America/New_York')).toBe(
+      '2025-11-02T08:30:00Z'
     );
   });
 
@@ -105,26 +157,31 @@ describe('convertLocalToUTCByZone', () => {
   });
 
   describe('error branches', () => {
-    it('throws UnknownTimezoneError if TZDate.tz throws for valid zone', () => {
-      const spy = jest.spyOn(TZDate, 'tz').mockImplementation(() => {
+    it('throws UnknownTimezoneError if tzOffset throws for valid zone', () => {
+      tzOffsetMock.mockImplementation(() => {
         throw new RangeError('forced');
       });
       expect(() => convertLocalToUTCByZone('2025-05-02T14:30:00', 'Europe/London')).toThrow(
         UnknownTimezoneError
       );
-      spy.mockRestore();
     });
 
-    it('throws InvalidTimestampError if TZDate.tz returns invalid Date', () => {
-      const spy = jest.spyOn(TZDate, 'tz').mockImplementation(() => {
-        const d = new Date(NaN) as unknown as TZDate;
-        Object.setPrototypeOf(d, TZDate.prototype);
-        return d;
-      });
+    it('throws UnknownTimezoneError if tzOffset returns NaN for valid zone', () => {
+      tzOffsetMock.mockReturnValue(NaN);
       expect(() => convertLocalToUTCByZone('2025-05-02T14:30:00', 'Europe/London')).toThrow(
-        InvalidTimestampError
+        UnknownTimezoneError
       );
-      spy.mockRestore();
     });
+  });
+});
+
+describe('convertToUTC DST handling', () => {
+  it('rejects nonexistent local airport times during DST spring-forward transitions', () => {
+    expect(() => convertToUTC('2025-03-09T02:30', 'JFK')).toThrow(InvalidTimestampError);
+    expect(() => convertToUTC('2025-03-30T01:30', 'LHR')).toThrow(InvalidTimestampError);
+  });
+
+  it('rejects ambiguous local airport times during DST fall-back transitions', () => {
+    expect(() => convertToUTC('2025-11-02T01:30', 'JFK')).toThrow(InvalidTimestampError);
   });
 });

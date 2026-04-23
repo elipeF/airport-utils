@@ -58,7 +58,7 @@ export async function generateMapping() {
       .split(/[=,]/)
       .map((part) => part.trim())
       .filter(Boolean);
-    return parts.at(-1) ?? '';
+    return parts[0] ?? '';
   };
 
   for (let i = 1; i < lines.length; i++) {

@@ -44,12 +44,14 @@ describe('generateMapping', () => {
 
   it('writes mappings and normalizes city names', async () => {
     const csv = buildCsv([
-      // Airport row should win and city should be last token after "="
+      // Airport row should win and city should be the primary token from the source list
       'ACE^Atlantic/Canary^28.95027^-13.60556^Lanzarote Airport^Lanzarote=Arrecife^A^ES^Spain^Europe',
       // City rows should be ignored
       'ACE^Europe/Paris^28.96302^-13.54769^Arrecife^Lanzarote=Arrecife^C^ES^Spain^Europe',
       'AMS^Europe/Amsterdam^52.37403^4.88969^Amsterdam^Amsterdam=Schiphol^C^NL^Netherlands^Europe',
       'AMS^Europe/Amsterdam^52.3103^4.76028^Amsterdam Airport Schiphol^Amsterdam=Schiphol^A^NL^Netherlands^Europe',
+      'JFK^America/New_York^40.63983^-73.77874^John F. Kennedy International Airport^New York City=Jamaica^A^US^United States^North America',
+      'FOO^UTC^1^2^Comma Airport^Foo,Bar^A^XX^Nowhere^Asia',
       // Invalid code should be skipped
       'ZZ^UTC^0^0^Bad^Bad City^A^ZZ^Nowhere^Antarctica',
       // Missing timezone should not add to timezone map
@@ -90,8 +92,10 @@ describe('generateMapping', () => {
     );
     expect(geoWrite).toBeTruthy();
     const geoContents = String(geoWrite?.[1]);
-    expect(geoContents).toContain('"city": "Arrecife"');
-    expect(geoContents).toContain('"city": "Schiphol"');
+    expect(geoContents).toContain('"city": "Lanzarote"');
+    expect(geoContents).toContain('"city": "Amsterdam"');
+    expect(geoContents).toContain('"city": "New York City"');
+    expect(geoContents).toContain('"city": "Foo"');
     expect(geoContents).not.toContain('Warszawa Centralna Railway Station');
   });
 

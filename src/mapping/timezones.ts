@@ -3073,6 +3073,7 @@ export const timezones: Record<string, string> = {
   IQM: 'Asia/Urumqi',
   IQN: 'Asia/Shanghai',
   IQQ: 'America/Santiago',
+  IQR: 'Asia/Manila',
   IQT: 'America/Lima',
   IRA: 'Pacific/Guadalcanal',
   IRC: 'America/Anchorage',

@@ -7,9 +7,9 @@ Convert local ISO 8601 timestamps to UTC using airport IATA codes, with airport 
 - **Local → UTC** conversion only (ISO 8601 in, ISO 8601 UTC out)
 - Built-in IATA→IANA timezone mapping (OPTD)
 - Built-in airport geo-data: latitude, longitude, name, city, country, country name
-- TypeScript support, Node 20+
+- TypeScript support, Node 22+
 - Synchronous API with custom error classes
-- Day.js (UTC & Timezone plugins) under the hood
+- `@date-fns/tz` under the hood
 - Daily auto-updated mapping via GitHub Actions
 - Jest tests with 100% coverage
 - Automated releases via semantic-release
@@ -38,6 +38,7 @@ try {
   console.log(utc); // "2025-05-02T18:30:00Z"
 } catch (err) {
   // handle UnknownAirportError or InvalidTimestampError
+  // InvalidTimestampError is also thrown for nonexistent or ambiguous DST wall-clock times
 }
 
 // Convert local time by zone
@@ -46,6 +47,7 @@ try {
   console.log(utc2); // "2025-05-02T13:30:00Z"
 } catch (err) {
   // handle UnknownTimezoneError or InvalidTimestampError
+  // InvalidTimestampError is also thrown for nonexistent or ambiguous DST wall-clock times
 }
 
 // Get full airport info
@@ -69,7 +71,7 @@ try {
 // Get all airports
 import { getAllAirports } from 'airport-utils';
 const airports = getAllAirports();
-console.log(airports.length); // > 10000
+console.log(airports.length); // > 8000
 ```
 
 ### API
