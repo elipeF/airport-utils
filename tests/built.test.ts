@@ -3,34 +3,35 @@ import fs from 'fs';
 import path from 'path';
 import type * as AirportUtils from '../src/index';
 
+let buildReady = false;
+
 function ensureBuild(): void {
-  const esmPath = path.resolve(__dirname, '../dist/esm/index.js');
-  const cjsPath = path.resolve(__dirname, '../dist/cjs/index.cjs');
-  if (fs.existsSync(esmPath) && fs.existsSync(cjsPath)) return;
+  if (buildReady) return;
   execSync('npm run build', { stdio: 'inherit' });
+  buildReady = true;
 }
 
 // Test CommonJS build
 describe('CommonJS build (dist/cjs)', () => {
+  let cjs: typeof AirportUtils;
+
   beforeAll(() => {
     ensureBuild();
+    cjs = require('../dist/cjs/index.cjs') as typeof AirportUtils;
   });
 
-  const cjs = require('../dist/cjs/index.cjs') as typeof AirportUtils;
-  const { convertToUTC, convertLocalToUTCByZone, getAirportInfo } = cjs;
-
   it('convertToUTC works in CommonJS build', () => {
-    expect(convertToUTC('2025-05-02T14:30', 'JFK')).toBe('2025-05-02T18:30:00Z');
+    expect(cjs.convertToUTC('2025-05-02T14:30', 'JFK')).toBe('2025-05-02T18:30:00Z');
   });
 
   it('convertLocalToUTCByZone works in CommonJS build', () => {
-    expect(convertLocalToUTCByZone('2025-05-02T14:30:00', 'Europe/London')).toBe(
+    expect(cjs.convertLocalToUTCByZone('2025-05-02T14:30:00', 'Europe/London')).toBe(
       '2025-05-02T13:30:00Z'
     );
   });
 
   it('getAirportInfo works in CommonJS build', () => {
-    const info = getAirportInfo('JFK');
+    const info = cjs.getAirportInfo('JFK');
     expect(info).toHaveProperty('timezone');
     expect(info).toHaveProperty('latitude');
     expect(info).toHaveProperty('longitude');

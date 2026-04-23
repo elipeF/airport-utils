@@ -2,6 +2,8 @@ import { timezones } from './mapping/timezones';
 import { geo } from './mapping/geo';
 import { UnknownAirportError } from './errors';
 
+const GEO_IATAS = Object.keys(geo);
+
 export interface AirportInfo {
   timezone: string;
   latitude: number;
@@ -27,7 +29,7 @@ export interface Airport extends AirportInfo {
 
 export function getAllAirports(): Airport[] {
   const all: Airport[] = [];
-  for (const iata of Object.keys(geo)) {
+  for (const iata of GEO_IATAS) {
     const tz = timezones[iata];
     const g = geo[iata];
     if (!tz || !g) continue;
