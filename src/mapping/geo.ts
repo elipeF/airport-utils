@@ -10328,7 +10328,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: -11.42644,
     longitude: 15.10122,
     name: 'Waku Kungo Airport',
-    city: 'Uacu Cungo',
+    city: 'Waku Kungo',
     country: 'AO',
     countryName: 'Angola',
     continent: 'Africa'
@@ -31055,7 +31055,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 48.5428,
     longitude: 32.285,
     name: 'Kropyvnytskyi Airport',
-    city: 'Kropyvnytskyy',
+    city: 'Kropyvnytskyi',
     country: 'UA',
     countryName: 'Ukraine',
     continent: 'Europe'
@@ -32261,7 +32261,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 27.8207,
     longitude: 52.352,
     name: 'Jam',
-    city: 'Kangān',
+    city: 'Bandar-e Kangān',
     country: 'IR',
     countryName: 'Iran',
     continent: 'Asia'
@@ -45491,7 +45491,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: -7.71661,
     longitude: 21.35828,
     name: 'Nzagi Airport',
-    city: 'Nzagi',
+    city: 'Nzaji',
     country: 'AO',
     countryName: 'Angola',
     continent: 'Africa'
@@ -48029,7 +48029,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 8.97334,
     longitude: -79.55558,
     name: 'Albrook "Marcos A. Gelabert" International Airport',
-    city: 'Panamá',
+    city: 'Panama City',
     country: 'PA',
     countryName: 'Panama',
     continent: 'North America'
@@ -51242,7 +51242,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 9.07136,
     longitude: -79.38345,
     name: 'Tocumen International Airport',
-    city: 'Panamá',
+    city: 'Panama City',
     country: 'PA',
     countryName: 'Panama',
     continent: 'North America'
