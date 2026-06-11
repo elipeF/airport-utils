@@ -3926,13 +3926,13 @@ export const geo: Record<string, GeoEntry> = {
     continent: 'North America'
   },
   AVR: {
-    latitude: 38.88375,
-    longitude: -9.02947,
-    name: 'Alverca Airport',
-    city: 'Alverca do Ribatejo',
-    country: 'PT',
-    countryName: 'Portugal',
-    continent: 'Europe'
+    latitude: 20.81436,
+    longitude: 77.72134,
+    name: 'Amravati Airport',
+    city: 'Amravati',
+    country: 'IN',
+    countryName: 'India',
+    continent: 'Asia'
   },
   AVV: {
     latitude: -38.039444,
@@ -12479,7 +12479,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 50.96064,
     longitude: 1.95574,
     name: 'Calais-Dunkerque Airport',
-    city: 'Dunkerque',
+    city: 'Dunkirk',
     country: 'FR',
     countryName: 'France',
     continent: 'Europe'
@@ -22343,7 +22343,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 57.66818,
     longitude: 12.29083,
     name: 'Gothenburg-Landvetter Airport',
-    city: 'Göteborg',
+    city: 'Gothenburg',
     country: 'SE',
     countryName: 'Sweden',
     continent: 'Europe'
@@ -22721,7 +22721,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 57.774722,
     longitude: 11.870372,
     name: 'Gothenburg City Airport',
-    city: 'Göteborg',
+    city: 'Gothenburg',
     country: 'SE',
     countryName: 'Sweden',
     continent: 'Europe'
@@ -23153,7 +23153,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 46.238064,
     longitude: 6.10895,
     name: 'Aéroport Genève-Cointrin',
-    city: 'Genève',
+    city: 'Geneva',
     country: 'CH',
     countryName: 'Switzerland',
     continent: 'Europe'
@@ -25065,6 +25065,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
+  },
+  HNG: {
+    latitude: 36.33632,
+    longitude: 100.47993,
+    name: 'Hainanzhou Gonghe Airport',
+    city: 'Qabqa',
+    country: 'CN',
+    countryName: 'China',
+    continent: 'Asia'
   },
   HNH: {
     latitude: 58.09698,
@@ -29273,7 +29282,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: -14.7,
     longitude: 16.08,
     name: 'Jamba Airport',
-    city: 'Ndjamba',
+    city: 'Jamba Mineira',
     country: 'AO',
     countryName: 'Angola',
     continent: 'Africa'
@@ -45113,7 +45122,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 49.49575,
     longitude: 11.07576,
     name: 'Nuremberg Airport',
-    city: 'Nürnberg',
+    city: 'Nuremberg',
     country: 'DE',
     countryName: 'Germany',
     continent: 'Europe'
