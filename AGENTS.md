@@ -38,6 +38,11 @@ npm test
 `npm test` type-checks, builds both module formats, runs all tests, and enforces 100% statement,
 branch, function, and line coverage.
 
+`npm run typecheck` runs the TypeScript solution with `tsc --build --noEmit`. Keep shared compiler
+options in `tsconfig.base.json`, project references in `tsconfig.json`, publishable-source settings
+in `tsconfig.build.json`, and tests, scripts, and tooling in `tsconfig.test.json`. In particular,
+keep `rootDir: "src"` build-only so editor and CI validation can include repository tooling.
+
 For dependency or build-system changes, validate clean installs and tests on both supported CI
 versions: Node.js 22 and Node.js 24.
 
@@ -61,6 +66,12 @@ Regenerate them with:
 ```bash
 npm run update:mapping
 ```
+
+The generator runs directly through Node's TypeScript support. Its generated-data imports use the
+private `#mapping/geo` and `#mapping/timezones` aliases declared in `package.json`; preserve these
+aliases. Relative extensionless ESM imports fail in native Node, while relative `.ts` specifiers
+trigger TS5097 unless `allowImportingTsExtensions` is enabled. Do not add that compiler escape hatch
+or a custom TypeScript loader for this script.
 
 The generator enforces request timeouts, source hashing, coordinate validation, minimum entry
 counts, maximum count drops, and required-airport checks. Do not weaken these gates merely to make
@@ -129,5 +140,14 @@ migration:
 - Dependabot version updates intentionally use one multi-ecosystem group for npm and GitHub
   Actions. Preserve the catch-all patterns so routine updates remain consolidated in one weekly
   pull request.
+- TypeScript project boundaries must match editor ownership and CI validation. A shared
+  `rootDir: "src"` caused TS6059 when tests imported `scripts/generateMapping.ts`; keeping it in the
+  build project and validating the root solution prevents editor-only diagnostics.
+- `Array.prototype.toSorted` requires the ES2023 library. The mapping generator sorts the fresh
+  array returned by `Object.keys` in place instead, avoiding an extra copy and retaining the ES2022
+  target. Keep the narrow Oxlint exception documenting why mutation is safe there.
+- TypeScript 7 installs a platform-specific native compiler package. When switching between Node
+  installations with different architectures, run a clean `npm ci` under each Node version rather
+  than reusing `node_modules`; CI matrix jobs already install independently.
 
 Do not commit, push, publish, or open pull requests unless explicitly requested.

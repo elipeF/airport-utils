@@ -3,8 +3,8 @@ import { createHash } from 'node:crypto';
 import fs from 'fs';
 import path from 'path';
 import { format } from 'oxfmt';
-import { geo as currentGeo } from '../src/mapping/geo';
-import { timezones as currentTimezones } from '../src/mapping/timezones';
+import { geo as currentGeo } from '#mapping/geo';
+import { timezones as currentTimezones } from '#mapping/timezones';
 
 const DEFAULT_SOURCE_URL =
   'https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv';
@@ -155,7 +155,9 @@ export async function generateMapping(options: GenerateMappingOptions = {}) {
     }
   }
 
-  const sortedCodes = Object.keys(timezonesMap).toSorted();
+  // Object.keys returns a fresh array, so sorting in place avoids an unnecessary copy.
+  // oxlint-disable-next-line unicorn/no-array-sort
+  const sortedCodes = Object.keys(timezonesMap).sort();
   const sortedTz = Object.fromEntries(sortedCodes.map((c) => [c, timezonesMap[c]]));
   const sortedGeo = Object.fromEntries(
     sortedCodes.filter((c) => geoMap[c]).map((c) => [c, geoMap[c]])

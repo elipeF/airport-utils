@@ -1,4 +1,7 @@
 // generated — do not edit
+// Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
+// Source SHA-256: fdda2c19364e281e50d19cf738ef469a2a3881d53602041cefb1a4e658181533
+// Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export const timezones: Record<string, string> = {
   AAA: 'Pacific/Tahiti',
   AAB: 'Australia/Brisbane',
@@ -435,7 +438,7 @@ export const timezones: Record<string, string> = {
   AVN: 'Europe/Paris',
   AVO: 'America/New_York',
   AVP: 'America/New_York',
-  AVR: 'Europe/Lisbon',
+  AVR: 'Asia/Kolkata',
   AVV: 'Australia/Melbourne',
   AVW: 'America/Phoenix',
   AVX: 'America/Los_Angeles',
@@ -1668,6 +1671,7 @@ export const timezones: Record<string, string> = {
   DJN: 'America/Anchorage',
   DJO: 'Africa/Abidjan',
   DJR: 'Australia/Brisbane',
+  DJT: 'America/New_York',
   DKA: 'Africa/Lagos',
   DKI: 'Australia/Lindeman',
   DKK: 'America/New_York',
@@ -1787,6 +1791,7 @@ export const timezones: Record<string, string> = {
   DTR: 'America/Los_Angeles',
   DTU: 'Asia/Shanghai',
   DTW: 'America/Detroit',
+  DTX: 'America/Chicago',
   DUA: 'America/Chicago',
   DUB: 'Europe/Dublin',
   DUC: 'America/Chicago',
@@ -2784,6 +2789,7 @@ export const timezones: Record<string, string> = {
   HNC: 'America/New_York',
   HND: 'Asia/Tokyo',
   HNE: 'America/Anchorage',
+  HNG: 'Asia/Shanghai',
   HNH: 'America/Juneau',
   HNK: 'Australia/Brisbane',
   HNL: 'Pacific/Honolulu',
@@ -3239,6 +3245,7 @@ export const timezones: Record<string, string> = {
   JJI: 'America/Lima',
   JJM: 'Africa/Nairobi',
   JJN: 'Asia/Shanghai',
+  JJU: 'America/Nuuk',
   JKG: 'Europe/Stockholm',
   JKH: 'Europe/Athens',
   JKL: 'Europe/Athens',
@@ -4982,6 +4989,7 @@ export const timezones: Record<string, string> = {
   NRR: 'America/Puerto_Rico',
   NRS: 'America/Los_Angeles',
   NRT: 'Asia/Tokyo',
+  NSA: 'Asia/Yangon',
   NSB: 'America/Nassau',
   NSE: 'America/Chicago',
   NSF: 'America/New_York',

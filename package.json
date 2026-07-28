@@ -28,6 +28,10 @@
     },
     "./package.json": "./package.json"
   },
+  "imports": {
+    "#mapping/geo": "./src/mapping/geo.ts",
+    "#mapping/timezones": "./src/mapping/timezones.ts"
+  },
   "type": "module",
   "files": [
     "dist/",
@@ -51,7 +55,7 @@
     "build:types": "tsc --project tsconfig.build.json --emitDeclarationOnly --declaration --outDir dist/types",
     "build:js": "rolldown -c && node scripts/dedupeBuildMappings.mjs",
     "build": "npm run build:types && npm run build:js",
-    "typecheck": "tsc --project tsconfig.test.json --noEmit",
+    "typecheck": "tsc --build --noEmit",
     "lint": "oxlint src tests scripts vitest.config.ts rolldown.config.js",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
