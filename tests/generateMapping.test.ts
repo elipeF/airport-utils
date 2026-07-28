@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest';
+
 const buildCsv = (rows: string[]) => {
   const header = [
     'iata_code',
@@ -14,32 +16,31 @@ const buildCsv = (rows: string[]) => {
   return [header, ...rows].join('\n');
 };
 
+const takeEntries = <T>(record: Record<string, T>, count: number) =>
+  Object.fromEntries(Object.entries(record).slice(0, count));
+
 const globalAny = globalThis as unknown as { fetch?: typeof globalThis.fetch };
 
-jest.mock('fs', () => {
-  const realFs = jest.requireActual('fs');
+vi.mock('fs', async () => {
+  const realFs = await vi.importActual<typeof import('fs')>('fs');
   return {
     __esModule: true,
     default: {
       ...realFs,
-      mkdirSync: jest.fn(),
-      writeFileSync: jest.fn()
+      mkdirSync: vi.fn(),
+      writeFileSync: vi.fn()
     }
   };
 });
 
-jest.mock('prettier', () => ({
-  __esModule: true,
-  default: {
-    resolveConfig: jest.fn(),
-    format: jest.fn(async (text: string) => text)
-  }
+vi.mock('oxfmt', () => ({
+  format: vi.fn(async (_filePath: string, text: string) => ({ code: text }))
 }));
 
 describe('generateMapping', () => {
   beforeEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it('writes mappings and normalizes city names', async () => {
@@ -64,30 +65,27 @@ describe('generateMapping', () => {
       'MIS^UTC^1^2^Missing Fields^City'
     ]);
 
-    const fetchMock = jest.fn(async () => ({
+    const fetchMock = vi.fn(async () => ({
       ok: true,
       text: async () => csv
     })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const fs = await import('fs');
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue({});
+    const oxfmt = await import('oxfmt');
 
     const { generateMapping } = await import('../scripts/generateMapping');
-    await generateMapping();
+    await generateMapping({ enforceQualityGates: false });
 
-    expect(fs.default.mkdirSync as jest.Mock).toHaveBeenCalled();
-    expect(fs.default.writeFileSync as jest.Mock).toHaveBeenCalledTimes(2);
-    expect(prettier.default.resolveConfig).toHaveBeenCalledWith(expect.any(String), {
-      editorconfig: true
-    });
-    expect(prettier.default.format).toHaveBeenCalledWith(
+    expect(fs.default.mkdirSync as Mock).toHaveBeenCalled();
+    expect(fs.default.writeFileSync as Mock).toHaveBeenCalledTimes(2);
+    expect(oxfmt.format).toHaveBeenCalledWith(
+      'timezones.ts',
       expect.any(String),
-      expect.objectContaining({ parser: 'typescript' })
+      expect.objectContaining({ singleQuote: true })
     );
 
-    const geoWrite = (fs.default.writeFileSync as jest.Mock).mock.calls.find(([file]) =>
+    const geoWrite = (fs.default.writeFileSync as Mock).mock.calls.find(([file]) =>
       String(file).endsWith('geo.ts')
     );
     expect(geoWrite).toBeTruthy();
@@ -96,20 +94,29 @@ describe('generateMapping', () => {
     expect(geoContents).toContain('"city": "Amsterdam"');
     expect(geoContents).toContain('"city": "New York City"');
     expect(geoContents).toContain('"city": "Foo"');
+    expect(geoContents).toContain('Source SHA-256:');
     expect(geoContents).not.toContain('Warszawa Centralna Railway Station');
   });
 
   it('throws when required columns are missing', async () => {
     const badCsv = ['iata_code^timezone^latitude'].join('\n');
 
-    const fetchMock = jest.fn(async () => ({
+    const fetchMock = vi.fn(async () => ({
       ok: true,
       text: async () => badCsv
     })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue({});
+    const { generateMapping } = await import('../scripts/generateMapping');
+    await expect(generateMapping()).rejects.toThrow('Missing required OPTD columns');
+  });
+
+  it('throws when the source dataset is empty', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      text: async () => ''
+    })) as unknown as typeof globalThis.fetch;
+    globalAny.fetch = fetchMock;
 
     const { generateMapping } = await import('../scripts/generateMapping');
     await expect(generateMapping()).rejects.toThrow('Missing required OPTD columns');
@@ -119,18 +126,15 @@ describe('generateMapping', () => {
     const csv = buildCsv([
       'ACE^Atlantic/Canary^28.95027^-13.60556^Lanzarote Airport^Lanzarote=Arrecife^A^ES^Spain^Europe'
     ]);
-    const globalFetch = jest.fn(async () => ({
+    const globalFetch = vi.fn(async () => ({
       ok: true,
       text: async () => csv
     })) as unknown as typeof globalThis.fetch;
     const previousFetch = globalAny.fetch;
     globalAny.fetch = globalFetch;
 
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue({});
-
     const { generateMapping } = await import('../scripts/generateMapping');
-    await generateMapping();
+    await generateMapping({ enforceQualityGates: false });
 
     expect(globalFetch).toHaveBeenCalled();
     globalAny.fetch = previousFetch;
@@ -147,29 +151,23 @@ describe('generateMapping', () => {
   });
 
   it('throws when fetch response is not ok', async () => {
-    const fetchMock = jest.fn(async () => ({
+    const fetchMock = vi.fn(async () => ({
       ok: false,
       statusText: 'Bad Gateway',
       text: async () => ''
     })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue({});
-
     const { generateMapping } = await import('../scripts/generateMapping');
     await expect(generateMapping()).rejects.toThrow('Fetch failed: Bad Gateway');
   });
 
-  it('uses fallback config and unknown error status text', async () => {
-    const fetchMock = jest.fn(async () => ({
+  it('uses unknown error status text when the response omits it', async () => {
+    const fetchMock = vi.fn(async () => ({
       ok: false,
       text: async () => ''
     })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
-
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue(null);
 
     const { generateMapping } = await import('../scripts/generateMapping');
     await expect(generateMapping()).rejects.toThrow('Fetch failed: Unknown error');
@@ -183,20 +181,18 @@ describe('generateMapping', () => {
       'NTZ^^7^8^No Tz Airport^City^A^XX^Nowhere^Asia',
       'NTZ^UTC^7^8^No Tz Airport^City^A^XX^Nowhere^Asia'
     ]);
-    const fetchMock = jest.fn(async () => ({
+    const fetchMock = vi.fn(async () => ({
       ok: true,
       text: async () => csv
     })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
 
     const fs = await import('fs');
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue({});
 
     const { generateMapping } = await import('../scripts/generateMapping');
-    await generateMapping();
+    await generateMapping({ enforceQualityGates: false });
 
-    const geoWrite = (fs.default.writeFileSync as jest.Mock).mock.calls.find(([file]) =>
+    const geoWrite = (fs.default.writeFileSync as Mock).mock.calls.find(([file]) =>
       String(file).endsWith('geo.ts')
     );
     expect(geoWrite).toBeTruthy();
@@ -209,14 +205,11 @@ describe('generateMapping', () => {
 
   it('uses default cwd/sourceUrl when omitted', async () => {
     const csv = buildCsv(['DEF^UTC^1^2^Default Airport^Default City^A^XX^Nowhere^Asia']);
-    const fetchMock = jest.fn(async () => ({
+    const fetchMock = vi.fn(async () => ({
       ok: true,
       text: async () => csv
     })) as unknown as typeof globalThis.fetch;
     globalAny.fetch = fetchMock;
-
-    const prettier = await import('prettier');
-    (prettier.default.resolveConfig as jest.Mock).mockResolvedValue({});
 
     const fs = await import('fs');
     const os = await import('os');
@@ -226,12 +219,55 @@ describe('generateMapping', () => {
     process.chdir(tempDir);
 
     const { generateMapping } = await import('../scripts/generateMapping');
-    await generateMapping();
+    await generateMapping({ enforceQualityGates: false });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv'
+      'https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv',
+      { signal: expect.any(AbortSignal) }
     );
 
     process.chdir(previousCwd);
+  });
+
+  it('rejects unexpectedly small mapping datasets', async () => {
+    const csv = buildCsv([
+      'JFK^America/New_York^40.63983^-73.77874^John F. Kennedy International Airport^New York City^A^US^United States^North America'
+    ]);
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      text: async () => csv
+    })) as unknown as typeof globalThis.fetch;
+    globalAny.fetch = fetchMock;
+
+    const { generateMapping } = await import('../scripts/generateMapping');
+    await expect(generateMapping()).rejects.toThrow('Mapping quality gate failed');
+  });
+
+  it('enforces entry counts, drop limits, and required airports', async () => {
+    const { assertMappingQuality } = await import('../scripts/generateMapping');
+    const { timezones } = await import('../src/mapping/timezones');
+    const { geo } = await import('../src/mapping/geo');
+
+    expect(() => assertMappingQuality(timezones, geo)).not.toThrow();
+    expect(() => assertMappingQuality({}, geo)).toThrow('timezone entries');
+    expect(() => assertMappingQuality(timezones, {})).toThrow('geo entries');
+    expect(() => assertMappingQuality(takeEntries(timezones, 8_100), geo)).toThrow(
+      'timezone count dropped'
+    );
+    expect(() => assertMappingQuality(timezones, takeEntries(geo, 8_100))).toThrow(
+      'geo count dropped'
+    );
+
+    const timezonesWithoutJfk = { ...timezones };
+    delete timezonesWithoutJfk.JFK;
+    expect(() => assertMappingQuality(timezonesWithoutJfk, geo)).toThrow(
+      'missing timezone for JFK'
+    );
+
+    const geoWithoutJfk = { ...geo };
+    delete geoWithoutJfk.JFK;
+    expect(() => assertMappingQuality(timezones, geoWithoutJfk)).toThrow(
+      'missing geo entry for JFK'
+    );
   });
 });

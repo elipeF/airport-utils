@@ -122,18 +122,18 @@ const results = {
     getAirportInfo: benchmark('getAirportInfo', 250_000, () => {
       getAirportInfo('JFK');
     }),
-    convertToUTC_singleAirport: benchmark('convertToUTC_singleAirport', sameAirportCases.length, (index) => {
-      const item = sameAirportCases[index];
-      convertToUTC(item.localIso, item.iata);
-    }),
-    convertToUTC_mixedAirports: benchmark(
-      'convertToUTC_mixedAirports',
-      50_000,
+    convertToUTC_singleAirport: benchmark(
+      'convertToUTC_singleAirport',
+      sameAirportCases.length,
       (index) => {
-        const item = mixedAirportCases[index % mixedAirportCases.length];
-        convertToUTC(item[1], item[0]);
+        const item = sameAirportCases[index];
+        convertToUTC(item.localIso, item.iata);
       }
     ),
+    convertToUTC_mixedAirports: benchmark('convertToUTC_mixedAirports', 50_000, (index) => {
+      const item = mixedAirportCases[index % mixedAirportCases.length];
+      convertToUTC(item[1], item[0]);
+    }),
     convertLocalToUTCByZone_singleZone: benchmark(
       'convertLocalToUTCByZone_singleZone',
       sameZoneCases.length,

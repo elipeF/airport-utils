@@ -1,10 +1,10 @@
 describe('getAllAirports with inconsistent mappings', () => {
   it('excludes airports missing timezone entries', async () => {
-    jest.resetModules();
-    jest.doMock('../src/mapping/timezones', () => ({
+    vi.resetModules();
+    vi.doMock('../src/mapping/timezones', () => ({
       timezones: { AAA: 'UTC' }
     }));
-    jest.doMock('../src/mapping/geo', () => ({
+    vi.doMock('../src/mapping/geo', () => ({
       geo: {
         AAA: {
           latitude: 1,

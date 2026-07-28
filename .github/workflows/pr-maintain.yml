@@ -4,7 +4,7 @@ on:
   pull_request_target:
     types: [opened, reopened, synchronize, ready_for_review]
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -22,6 +22,7 @@ env:
 jobs:
   maintain:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Determine PR number (if event is a PR)
         id: pr
@@ -32,7 +33,7 @@ jobs:
 
       - name: Update the PR branch to latest base
         if: ${{ steps.pr.outputs.number != '' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-        uses: actions/github-script@v9
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
         with:
           github-token: ${{ env.BOT_TOKEN }}
           script: |
@@ -62,7 +63,7 @@ jobs:
 
       - name: Auto-approve bot PR(s) (skip if reviewer == author or already approved)
         if: ${{ steps.pr.outputs.number != '' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-        uses: actions/github-script@v9
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
         with:
           github-token: ${{ env.BOT_TOKEN }}
           script: |
@@ -111,7 +112,7 @@ jobs:
 
       - name: Enable auto-merge (squash)
         if: ${{ steps.pr.outputs.number != '' }}
-        uses: peter-evans/enable-pull-request-automerge@v3
+        uses: peter-evans/enable-pull-request-automerge@a660677d5469627102a1c1e11409dd063606628d # v3
         with:
           token: ${{ env.BOT_TOKEN }}
           pull-request-number: ${{ steps.pr.outputs.number }}

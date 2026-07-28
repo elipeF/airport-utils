@@ -1,0 +1,16 @@
+airport-utils includes transformed airport and timezone data from Open Travel
+Data (OPTD):
+
+https://github.com/opentraveldata/opentraveldata
+
+OPTD states that its curated and generated datasets are provided under the
+Creative Commons Attribution license (CC BY):
+
+https://opentraveldata.github.io/opentraveldata/
+
+The bundled data is modified from the source dataset by filtering it to airport
+records with three-character IATA codes, selecting timezone and geographic
+fields, normalizing city names, and serializing the result for this package.
+
+The airport-utils software itself is distributed under the MIT License. See
+LICENSE for the complete software license text.

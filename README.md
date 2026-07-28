@@ -7,11 +7,11 @@ Convert local ISO 8601 timestamps to UTC using airport IATA codes, with airport 
 - **Local → UTC** conversion only (ISO 8601 in, ISO 8601 UTC out)
 - Built-in IATA→IANA timezone mapping (OPTD)
 - Built-in airport geo-data: latitude, longitude, name, city, country, country name
-- TypeScript support, Node 22+
+- TypeScript 7 support, Node 22+
 - Synchronous API with custom error classes
 - `@date-fns/tz` under the hood
 - Daily auto-updated mapping via GitHub Actions
-- Jest tests with 100% coverage
+- Vitest tests with 100% coverage
 - Automated releases via semantic-release
 
 ## Installation
@@ -74,18 +74,19 @@ const airports = getAllAirports();
 console.log(airports.length); // > 8000
 ```
 
+For conversion-only applications, use the lightweight subpath so the geographic dataset is not
+loaded:
+
+```ts
+import { convertToUTC } from 'airport-utils/converter';
+```
+
 ### API
 
 ```ts
-export function convertToUTC(
-  localIso: string,
-  iata: string
-): string;
+export function convertToUTC(localIso: string, iata: string): string;
 
-export function convertLocalToUTCByZone(
-  localIso: string,
-  timeZone: string
-): string;
+export function convertLocalToUTCByZone(localIso: string, timeZone: string): string;
 
 export function getAirportInfo(iata: string): {
   timezone: string;
@@ -122,6 +123,7 @@ npm run update:mapping
 ```
 
 Runs `scripts/generateMapping.ts` to fetch OPTD CSV and regenerate:
+
 - `src/mapping/timezones.ts`
 - `src/mapping/geo.ts`
 
@@ -129,18 +131,31 @@ Runs `scripts/generateMapping.ts` to fetch OPTD CSV and regenerate:
 
 ```bash
 npm ci
-npm run build
+npm run typecheck
+npm run lint
+npm run format:check
 npm test
 npm run update:mapping
 ```
+
+The development toolchain uses TypeScript 7 for native type-checking. Rolldown, Oxlint, and Oxfmt
+provide the Rust-backed build, lint, and formatting layers.
 
 ## CI & Release
 
 - **ci.yml**: build & test on push/PR
 - **update-mapping.yml**: daily at 00:00 UTC, updates mapping, builds & tests, auto-commit
-- **publish.yml**: daily at 02:00 UTC, builds, tests, and runs semantic-release
-- Semantic-release uses default commit-analyzer rules and publishes to npm via `NPM_TOKEN`
+- **publish.yml**: after successful `main` CI, builds, tests, and runs semantic-release
+- Semantic-release publishes through npm trusted publishing with GitHub Actions OIDC
+
+The npm package must trust the `elipeF/airport-utils` repository and `publish.yml` workflow in its
+Trusted Publisher settings. No long-lived npm publish token is required.
 
 ## License
 
-MIT
+The software is available under the [MIT License](./LICENSE).
+
+The bundled airport and timezone mappings are transformed from
+[Open Travel Data (OPTD)](https://github.com/opentraveldata/opentraveldata), whose curated and
+generated datasets are provided under CC BY. See [NOTICE](./NOTICE) for attribution and
+transformation details.

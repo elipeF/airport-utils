@@ -1,21 +1,12 @@
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import path from 'path';
 import type * as AirportUtils from '../src/index';
-
-let buildReady = false;
-
-function ensureBuild(): void {
-  if (buildReady) return;
-  execSync('npm run build', { stdio: 'inherit' });
-  buildReady = true;
-}
 
 // Test CommonJS build
 describe('CommonJS build (dist/cjs)', () => {
   let cjs: typeof AirportUtils;
 
   beforeAll(() => {
-    ensureBuild();
     cjs = require('../dist/cjs/index.cjs') as typeof AirportUtils;
   });
 
@@ -35,35 +26,63 @@ describe('CommonJS build (dist/cjs)', () => {
     expect(info).toHaveProperty('latitude');
     expect(info).toHaveProperty('longitude');
   });
+
+  it('exposes a lightweight CommonJS converter subpath', () => {
+    const script = `
+      const converter = require('airport-utils/converter');
+      const geoLoaded = Object.keys(require.cache).some(path => path.includes('/mapping/geo.cjs'));
+      console.log(JSON.stringify({
+        result: converter.convertToUTC('2025-05-02T14:30', 'JFK'),
+        geoLoaded
+      }));
+    `;
+    const result = JSON.parse(
+      execFileSync(process.execPath, ['--eval', script], { encoding: 'utf8' }).trim()
+    );
+    expect(result).toEqual({ result: '2025-05-02T18:30:00Z', geoLoaded: false });
+  });
 });
 
 // Test ESM build using a subprocess to dynamically import the file
 describe('ESM build (dist/esm)', () => {
-  beforeAll(() => {
-    ensureBuild();
-  });
-
   const esmPath = path.resolve(__dirname, '../dist/esm/index.js');
   const fileUrl = 'file://' + esmPath;
 
   it('convertToUTC works in ESM build', () => {
-    const cmd = `node -e "(async()=>{ const m = await import('${fileUrl}'); console.log(m.convertToUTC('2025-05-02T14:30','JFK')); })()"`;
-    const result = execSync(cmd, { encoding: 'utf-8' }).trim();
+    const script = `const m = await import('${fileUrl}'); console.log(m.convertToUTC('2025-05-02T14:30','JFK'));`;
+    const result = execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
+      encoding: 'utf8'
+    }).trim();
     expect(result).toBe('2025-05-02T18:30:00Z');
   });
 
   it('convertLocalToUTCByZone works in ESM build', () => {
-    const cmd = `node -e "(async()=>{ const m = await import('${fileUrl}'); console.log(m.convertLocalToUTCByZone('2025-05-02T14:30:00','Europe/London')); })()"`;
-    const result = execSync(cmd, { encoding: 'utf-8' }).trim();
+    const script = `const m = await import('${fileUrl}'); console.log(m.convertLocalToUTCByZone('2025-05-02T14:30:00','Europe/London'));`;
+    const result = execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
+      encoding: 'utf8'
+    }).trim();
     expect(result).toBe('2025-05-02T13:30:00Z');
   });
 
   it('getAirportInfo works in ESM build', () => {
-    const cmd = `node -e "(async()=>{ const m = await import('${fileUrl}'); console.log(JSON.stringify(m.getAirportInfo('JFK'))); })()"`;
-    const result = execSync(cmd, { encoding: 'utf-8' }).trim();
+    const script = `const m = await import('${fileUrl}'); console.log(JSON.stringify(m.getAirportInfo('JFK')));`;
+    const result = execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
+      encoding: 'utf8'
+    }).trim();
     const info = JSON.parse(result);
     expect(info).toHaveProperty('timezone');
     expect(info).toHaveProperty('latitude');
     expect(info).toHaveProperty('longitude');
+  });
+
+  it('exposes an ESM converter subpath', () => {
+    const script = `
+      const converter = await import('airport-utils/converter');
+      console.log(converter.convertToUTC('2025-05-02T14:30', 'JFK'));
+    `;
+    const result = execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
+      encoding: 'utf8'
+    }).trim();
+    expect(result).toBe('2025-05-02T18:30:00Z');
   });
 });

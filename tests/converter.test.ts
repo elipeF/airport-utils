@@ -3,19 +3,19 @@ import { convertToUTC, convertLocalToUTCByZone } from '../src/converter';
 import { UnknownAirportError, InvalidTimestampError, UnknownTimezoneError } from '../src/errors';
 import { getInvalidIata } from './helpers';
 
-const realDateFnsTz = jest.requireActual('@date-fns/tz') as typeof dateFnsTz;
+const realDateFnsTz = await vi.importActual<typeof dateFnsTz>('@date-fns/tz');
 
-jest.mock('@date-fns/tz', () => {
-  const actual = jest.requireActual('@date-fns/tz') as typeof dateFnsTz;
+vi.mock('@date-fns/tz', async () => {
+  const actual = await vi.importActual<typeof dateFnsTz>('@date-fns/tz');
   return {
     ...actual,
-    tzOffset: jest.fn(actual.tzOffset),
-    tzScan: jest.fn(actual.tzScan)
+    tzOffset: vi.fn(actual.tzOffset),
+    tzScan: vi.fn(actual.tzScan)
   };
 });
 
 const invalidIata = getInvalidIata();
-const tzOffsetMock = dateFnsTz.tzOffset as jest.MockedFunction<typeof dateFnsTz.tzOffset>;
+const tzOffsetMock = vi.mocked(dateFnsTz.tzOffset);
 
 describe('convertToUTC', () => {
   beforeEach(() => {
