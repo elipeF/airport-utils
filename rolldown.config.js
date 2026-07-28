@@ -1,28 +1,15 @@
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
+import { defineConfig } from 'rolldown';
 import pkg from './package.json' with { type: 'json' };
-
 
 const external = [
   ...Object.keys(pkg.dependencies || {}),
-  ...Object.keys(pkg.peerDependencies || {}),
+  ...Object.keys(pkg.peerDependencies || {})
 ];
 
-const sharedPlugins = () => [
-  resolve(),
-  typescript({
-    tsconfig: './tsconfig.json',
-    declaration: false,
-    compilerOptions: { outDir: undefined }
-  })
-];
-
-export default [
-  // ESM build
+export default defineConfig([
   {
     input: 'src/index.ts',
     external,
-    plugins: sharedPlugins(),
     output: {
       dir: 'dist/esm',
       format: 'esm',
@@ -31,12 +18,9 @@ export default [
       entryFileNames: '[name].js'
     }
   },
-
-  // CJS build
   {
     input: 'src/index.ts',
     external,
-    plugins: sharedPlugins(),
     output: {
       dir: 'dist/cjs',
       format: 'cjs',
@@ -45,4 +29,4 @@ export default [
       entryFileNames: '[name].cjs'
     }
   }
-];
+]);

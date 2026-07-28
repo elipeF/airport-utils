@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "env": {
+    "builtin": true,
+    "node": true
+  },
+  "ignorePatterns": ["coverage/**", "dist/**", "node_modules/**", "src/mapping/**"],
+  "options": {
+    "denyWarnings": true,
+    "reportUnusedDisableDirectives": "error"
+  },
+  "plugins": ["eslint", "typescript", "oxc", "unicorn", "node", "vitest"],
+  "overrides": [
+    {
+      "files": ["tests/**/*.ts"],
+      "env": {
+        "vitest": true
+      },
+      "rules": {
+        "typescript/no-require-imports": "off",
+        "vitest/require-mock-type-parameters": "off"
+      }
+    }
+  ]
+}

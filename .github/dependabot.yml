@@ -1,23 +1,24 @@
 version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"                         # Location of package.json
-    schedule:
-      interval: "daily"                   # Check every day
-    open-pull-requests-limit: 20          # Max 20 open PRs
-    labels:
-      - "dependencies"                    # Attach this label
-    versioning-strategy: "auto"           # Allow patch, minor & major bumps
-    commit-message:
-      prefix: "chore(deps)"
-      include: scope
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+multi-ecosystem-groups:
+  dependencies:
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
+      interval: 'weekly'
     labels:
-      - "dependencies"
+      - 'dependencies'
     commit-message:
-      prefix: "chore(deps)"
+      prefix: 'chore(deps)'
+
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    patterns:
+      - '*'
+    multi-ecosystem-group: 'dependencies'
+    versioning-strategy: 'auto'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    patterns:
+      - '*'
+    multi-ecosystem-group: 'dependencies'
