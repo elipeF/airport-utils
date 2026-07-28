@@ -99,4 +99,35 @@ Semantic-release runs after successful CI on `main`. Follow Conventional Commits
 `chore(mapping)` has an explicit patch-release rule. Tooling, documentation, formatting, and test
 changes should not publish package versions by themselves.
 
+## Session Learnings and Guardrails
+
+The current architecture reflects several findings from the TypeScript 7 and Rust-tooling
+migration:
+
+- Install TypeScript 7 directly as `typescript`. A scoped npm alias did not expose the expected
+  `tsc` binary, while side-by-side TypeScript aliases caused binary collisions. TypeScript 6 is not
+  part of the supported development or consumer contract.
+- Keep `Date.UTC` in the conversion hot path. Constructing a `Date` and calling `setUTCFullYear`
+  made timestamp construction approximately 3.34 times slower in a Node.js 24 microbenchmark.
+  Supporting years `0000` through `0099` is not worth that runtime cost for this project.
+- The ESM and CommonJS builds originally duplicated the full geographic and timezone datasets.
+  Shared JSON assets reduced the packed artifact from roughly 624 KB to 312 KB and the unpacked
+  artifact from roughly 3.49 MB to 1.61 MB. Treat those numbers as package-size regression
+  baselines.
+- Importing the package root necessarily exposes both conversion and airport-information APIs.
+  Conversion-only consumers should use `airport-utils/converter`, which avoids loading the large
+  geographic dataset. Preserve the built-package test that verifies this behavior.
+- The current checked-in mappings contain about 8,400 airports. The generator's 8,000-entry floor,
+  2% maximum drop, anchor-airport checks, coordinate validation, request timeout, and source hash
+  protect against silently publishing truncated or corrupted upstream data.
+- A full npm audit currently reports development-only findings through semantic-release's bundled
+  npm dependencies. The production graph has zero known vulnerabilities. Do not downgrade current
+  release tooling or run forceful audit fixes merely to make the development-only count disappear.
+- OIDC permissions in `publish.yml` are only the repository half of trusted publishing. The npm
+  package settings must trust owner `elipeF`, repository `airport-utils`, workflow `publish.yml`,
+  and the `npm publish` action before tokenless releases can succeed.
+- Dependabot version updates intentionally use one multi-ecosystem group for npm and GitHub
+  Actions. Preserve the catch-all patterns so routine updates remain consolidated in one weekly
+  pull request.
+
 Do not commit, push, publish, or open pull requests unless explicitly requested.
