@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: fdda2c19364e281e50d19cf738ef469a2a3881d53602041cefb1a4e658181533
+// Source SHA-256: cf2fce387876e43711111a235d8a62794db9825d0cde790b37ea3cf1851c05ca
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export interface GeoEntry {
   latitude: number;
@@ -31913,7 +31913,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 11.68636,
     longitude: 122.38117,
     name: 'Kalibo Airport',
-    city: 'Kalibo (poblacion)',
+    city: 'Kalibo',
     country: 'PH',
     countryName: 'Philippines',
     continent: 'Asia'
