@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: cf2fce387876e43711111a235d8a62794db9825d0cde790b37ea3cf1851c05ca
+// Source SHA-256: 2ca1750d555fdaa8b0e2e9a1345fb8fefbe879f5707e9466a46757dbc4a31443
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export const timezones: Record<string, string> = {
   AAA: 'Pacific/Tahiti',
@@ -3754,6 +3754,7 @@ export const timezones: Record<string, string> = {
   KXF: 'Pacific/Fiji',
   KXK: 'Asia/Vladivostok',
   KXO: 'Africa/Kampala',
+  KXS: 'Asia/Jayapura',
   KXU: 'Pacific/Tahiti',
   KYA: 'Europe/Istanbul',
   KYB: 'Australia/Perth',
@@ -5790,6 +5791,7 @@ export const timezones: Record<string, string> = {
   QAM: 'Europe/Paris',
   QBC: 'America/Vancouver',
   QBL: 'Africa/Tripoli',
+  QBS: 'Australia/Perth',
   QBU: 'Australia/Perth',
   QBX: 'America/Fortaleza',
   QCH: 'America/Sao_Paulo',
