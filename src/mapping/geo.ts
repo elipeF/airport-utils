@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: cf2fce387876e43711111a235d8a62794db9825d0cde790b37ea3cf1851c05ca
+// Source SHA-256: 2ca1750d555fdaa8b0e2e9a1345fb8fefbe879f5707e9466a46757dbc4a31443
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export interface GeoEntry {
   latitude: number;
@@ -2174,9 +2174,9 @@ export const geo: Record<string, GeoEntry> = {
     continent: 'North America'
   },
   ALY: {
-    latitude: 31.183903,
-    longitude: 29.948889,
-    name: 'Alexandria / Nouzha Airport',
+    latitude: 30.917669,
+    longitude: 29.696408,
+    name: 'Alexandria International Airport',
     city: 'Alexandria',
     country: 'EG',
     countryName: 'Egypt',
@@ -23821,7 +23821,7 @@ export const geo: Record<string, GeoEntry> = {
   HBE: {
     latitude: 30.917669,
     longitude: 29.696408,
-    name: 'Alexandria Borg El Arab Airport',
+    name: 'Alexandria International Airport',
     city: 'Alexandria',
     country: 'EG',
     countryName: 'Egypt',
@@ -28979,7 +28979,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 21.973914,
     longitude: 100.759611,
     name: 'Xishuangbanna Gasa Airport',
-    city: 'Jinghong',
+    city: 'Yunjinghong',
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -33771,6 +33771,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'UG',
     countryName: 'Uganda',
     continent: 'Africa'
+  },
+  KXS: {
+    latitude: -8.0157,
+    longitude: 127.20038,
+    name: 'John Becker Airport',
+    city: 'Wonreli',
+    country: 'ID',
+    countryName: 'Indonesia',
+    continent: 'Asia'
   },
   KXU: {
     latitude: -16.33983,
@@ -52096,6 +52105,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Libya',
     continent: 'Africa'
   },
+  QBS: {
+    latitude: -26.42127,
+    longitude: 120.57967,
+    name: 'Jundee Airport',
+    city: 'Jundee',
+    country: 'AU',
+    countryName: 'Australia',
+    continent: 'Oceania'
+  },
   QBU: {
     latitude: -27.61046,
     longitude: 120.59418,
@@ -53810,7 +53828,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 36.40542,
     longitude: 28.08619,
     name: 'Rhodes International Airport',
-    city: 'Ródos',
+    city: 'Rhodes',
     country: 'GR',
     countryName: 'Greece',
     continent: 'Europe'
@@ -57400,7 +57418,7 @@ export const geo: Record<string, GeoEntry> = {
   SJJ: {
     latitude: 43.824583,
     longitude: 18.331467,
-    name: 'Sarajevo Airport',
+    name: 'Sarajevo International Airport',
     city: 'Sarajevo',
     country: 'BA',
     countryName: 'Bosnia and Herzegovina',
@@ -67703,9 +67721,9 @@ export const geo: Record<string, GeoEntry> = {
     continent: 'North America'
   },
   VTZ: {
-    latitude: 17.7212,
-    longitude: 83.2245,
-    name: 'Visakhapatnam Airport',
+    latitude: 17.9731,
+    longitude: 83.50568,
+    name: 'Alluri Sitarama Raju International Airport',
     city: 'Visakhapatnam',
     country: 'IN',
     countryName: 'India',
