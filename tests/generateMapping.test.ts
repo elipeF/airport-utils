@@ -270,4 +270,40 @@ describe('generateMapping', () => {
       'missing geo entry for JFK'
     );
   });
+
+  it('does not rewrite mappings when only the source hash changes', async () => {
+    const timezones = { AAA: 'Pacific/Tahiti' };
+    const geo = {
+      AAA: {
+        latitude: -17.352606,
+        longitude: -145.509956,
+        name: 'Anaa Airport',
+        city: 'Anaa',
+        country: 'PF',
+        countryName: 'French Polynesia',
+        continent: 'Oceania'
+      }
+    };
+    vi.doMock('#mapping/timezones', () => ({ timezones }));
+    vi.doMock('#mapping/geo', () => ({ geo }));
+
+    const csv = buildCsv([
+      'AAA^Pacific/Tahiti^-17.352606^-145.509956^Anaa Airport^Anaa^A^PF^French Polynesia^Oceania',
+      // This ignored row changes the downloaded source and its hash, but not either mapping.
+      'AAA^UTC^0^0^Anaa^Anaa^C^PF^French Polynesia^Oceania'
+    ]);
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      text: async () => csv
+    })) as unknown as typeof globalThis.fetch;
+    globalAny.fetch = fetchMock;
+
+    const fs = await import('fs');
+    const oxfmt = await import('oxfmt');
+    const { generateMapping } = await import('../scripts/generateMapping');
+    await generateMapping({ enforceQualityGates: false });
+
+    expect(oxfmt.format).not.toHaveBeenCalled();
+    expect(fs.default.writeFileSync as Mock).not.toHaveBeenCalled();
+  });
 });

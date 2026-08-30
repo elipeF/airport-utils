@@ -169,48 +169,51 @@ export async function generateMapping(options: GenerateMappingOptions = {}) {
   const dir = path.resolve(cwd, 'src/mapping');
   fs.mkdirSync(dir, { recursive: true });
 
-  // Write TypeScript modules
-  const tzTs = [
-    '// generated — do not edit',
-    `// Source: ${sourceUrl}`,
-    `// Source SHA-256: ${sourceHash}`,
-    '// Filtered and transformed from Open Travel Data (OPTD); see NOTICE.',
-    'export const timezones: Record<string, string> = ',
-    JSON.stringify(sortedTz, null, 2) + ';'
-  ].join('\n');
-  const { code: formattedTz } = await format('timezones.ts', tzTs, {
-    printWidth: 100,
-    semi: true,
-    singleQuote: true,
-    trailingComma: 'none'
-  });
-  fs.writeFileSync(path.join(dir, 'timezones.ts'), formattedTz);
+  if (JSON.stringify(sortedTz) !== JSON.stringify(currentTimezones)) {
+    const tzTs = [
+      '// generated — do not edit',
+      `// Source: ${sourceUrl}`,
+      `// Source SHA-256: ${sourceHash}`,
+      '// Filtered and transformed from Open Travel Data (OPTD); see NOTICE.',
+      'export const timezones: Record<string, string> = ',
+      JSON.stringify(sortedTz, null, 2) + ';'
+    ].join('\n');
+    const { code: formattedTz } = await format('timezones.ts', tzTs, {
+      printWidth: 100,
+      semi: true,
+      singleQuote: true,
+      trailingComma: 'none'
+    });
+    fs.writeFileSync(path.join(dir, 'timezones.ts'), formattedTz);
+  }
 
-  const geoTs = [
-    '// generated — do not edit',
-    `// Source: ${sourceUrl}`,
-    `// Source SHA-256: ${sourceHash}`,
-    '// Filtered and transformed from Open Travel Data (OPTD); see NOTICE.',
-    'export interface GeoEntry {',
-    '  latitude: number;',
-    '  longitude: number;',
-    '  name: string;',
-    '  city: string;',
-    '  country: string;',
-    '  countryName: string;',
-    '  continent: string;',
-    '}',
-    '',
-    'export const geo: Record<string, GeoEntry> = ',
-    JSON.stringify(sortedGeo, null, 2) + ';'
-  ].join('\n');
-  const { code: formattedGeo } = await format('geo.ts', geoTs, {
-    printWidth: 100,
-    semi: true,
-    singleQuote: true,
-    trailingComma: 'none'
-  });
-  fs.writeFileSync(path.join(dir, 'geo.ts'), formattedGeo);
+  if (JSON.stringify(sortedGeo) !== JSON.stringify(currentGeo)) {
+    const geoTs = [
+      '// generated — do not edit',
+      `// Source: ${sourceUrl}`,
+      `// Source SHA-256: ${sourceHash}`,
+      '// Filtered and transformed from Open Travel Data (OPTD); see NOTICE.',
+      'export interface GeoEntry {',
+      '  latitude: number;',
+      '  longitude: number;',
+      '  name: string;',
+      '  city: string;',
+      '  country: string;',
+      '  countryName: string;',
+      '  continent: string;',
+      '}',
+      '',
+      'export const geo: Record<string, GeoEntry> = ',
+      JSON.stringify(sortedGeo, null, 2) + ';'
+    ].join('\n');
+    const { code: formattedGeo } = await format('geo.ts', geoTs, {
+      printWidth: 100,
+      semi: true,
+      singleQuote: true,
+      trailingComma: 'none'
+    });
+    fs.writeFileSync(path.join(dir, 'geo.ts'), formattedGeo);
+  }
 
   console.log(
     `✅ Mappings: ${sortedCodes.length} timezones, ${Object.keys(sortedGeo).length} geo entries`
