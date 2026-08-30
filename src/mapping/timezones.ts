@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: 2ca1750d555fdaa8b0e2e9a1345fb8fefbe879f5707e9466a46757dbc4a31443
+// Source SHA-256: 83ac01aa2059f8a47621b69ceaa1ae562d2f8bee1bad6135f3df9b47700e1d94
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export const timezones: Record<string, string> = {
   AAA: 'Pacific/Tahiti',
