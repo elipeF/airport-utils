@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: 2ca1750d555fdaa8b0e2e9a1345fb8fefbe879f5707e9466a46757dbc4a31443
+// Source SHA-256: 3f6321b710f394bf8693d7b0b55bf6d78bfc5a6a2ba21b81ca4314125a7a8a8d
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export interface GeoEntry {
   latitude: number;
@@ -5831,7 +5831,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 19.98435,
     longitude: 42.62088,
     name: 'Bisha',
-    city: 'Qal‘at Bīshah',
+    city: 'Bīshah',
     country: 'SA',
     countryName: 'Saudi Arabia',
     continent: 'Asia'
