@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: 3f6321b710f394bf8693d7b0b55bf6d78bfc5a6a2ba21b81ca4314125a7a8a8d
+// Source SHA-256: 927b15b7eef7fc33dfa6ded8fc4fff34acce30ba580e1160fa898ddb7a8780ad
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export interface GeoEntry {
   latitude: number;
@@ -14345,7 +14345,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 28.60248,
     longitude: 86.79803,
     name: 'Rikaze Dingri Airport',
-    city: 'Rikaze',
+    city: 'Xigazê',
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -49922,7 +49922,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: -5.25726,
     longitude: 39.81142,
     name: 'Pemba / Karume Airport',
-    city: 'Pemba South Region',
+    city: 'Kusini Pemba',
     country: 'TZ',
     countryName: 'Tanzania',
     continent: 'Africa'
@@ -53306,7 +53306,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 23.68344,
     longitude: -74.83625,
     name: 'Port Nelson Airport',
-    city: 'Rum Cay Island',
+    city: 'Rum Cay',
     country: 'BS',
     countryName: 'Bahamas',
     continent: 'North America'
@@ -54215,7 +54215,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 29.3519,
     longitude: 89.31,
     name: 'Shigatse Peace Airport',
-    city: 'Rikaze',
+    city: 'Xigazê',
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -60749,7 +60749,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 14.794339,
     longitude: -92.370025,
     name: 'Tapachula International Airport',
-    city: 'Tapachula',
+    city: 'Tapachula de Córdova y Ordóñez',
     country: 'MX',
     countryName: 'Mexico',
     continent: 'North America'
@@ -73690,7 +73690,7 @@ export const geo: Record<string, GeoEntry> = {
   YTE: {
     latitude: 64.23094,
     longitude: -76.52862,
-    name: 'Cape Dorset Airport',
+    name: 'Kinngait Airport',
     city: 'Kinngait',
     country: 'CA',
     countryName: 'Canada',
@@ -73924,7 +73924,7 @@ export const geo: Record<string, GeoEntry> = {
   YUX: {
     latitude: 68.77611,
     longitude: -81.24361,
-    name: 'Hall Beach Airport',
+    name: 'Sanirajak Airport',
     city: 'Sanirajak',
     country: 'CA',
     countryName: 'Canada',
