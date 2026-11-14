@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: 3f6321b710f394bf8693d7b0b55bf6d78bfc5a6a2ba21b81ca4314125a7a8a8d
+// Source SHA-256: bb5c27bf9a1038c7bbf92c3289f0c5d248a9fa071e0877dd5924b7961fd86ea2
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export interface GeoEntry {
   latitude: number;
@@ -10804,6 +10804,15 @@ export const geo: Record<string, GeoEntry> = {
     countryName: 'Brazil',
     continent: 'South America'
   },
+  CHE: {
+    latitude: 6.26709,
+    longitude: 6.8714,
+    name: 'Chinua Achebe International Airport',
+    city: 'Umuotulu Umuleri',
+    country: 'NG',
+    countryName: 'Nigeria',
+    continent: 'Africa'
+  },
   CHF: {
     latitude: 35.1412,
     longitude: 128.696,
@@ -14345,7 +14354,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 28.60248,
     longitude: 86.79803,
     name: 'Rikaze Dingri Airport',
-    city: 'Rikaze',
+    city: 'Xigazê',
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -31178,6 +31187,15 @@ export const geo: Record<string, GeoEntry> = {
     city: 'Piranshahr',
     country: 'IR',
     countryName: 'Iran',
+    continent: 'Asia'
+  },
+  KHB: {
+    latitude: 32.36413,
+    longitude: 44.19899,
+    name: 'Karbala International Airport',
+    city: 'Karbala',
+    country: 'IQ',
+    countryName: 'Iraq',
     continent: 'Asia'
   },
   KHC: {
@@ -49922,7 +49940,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: -5.25726,
     longitude: 39.81142,
     name: 'Pemba / Karume Airport',
-    city: 'Pemba South Region',
+    city: 'Kusini Pemba',
     country: 'TZ',
     countryName: 'Tanzania',
     continent: 'Africa'
@@ -53306,7 +53324,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 23.68344,
     longitude: -74.83625,
     name: 'Port Nelson Airport',
-    city: 'Rum Cay Island',
+    city: 'Rum Cay',
     country: 'BS',
     countryName: 'Bahamas',
     continent: 'North America'
@@ -54215,7 +54233,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 29.3519,
     longitude: 89.31,
     name: 'Shigatse Peace Airport',
-    city: 'Rikaze',
+    city: 'Xigazê',
     country: 'CN',
     countryName: 'China',
     continent: 'Asia'
@@ -54327,6 +54345,15 @@ export const geo: Record<string, GeoEntry> = {
     country: 'US',
     countryName: 'United States',
     continent: 'North America'
+  },
+  RMH: {
+    latitude: 25.25299,
+    longitude: 46.39198,
+    name: 'Malham International Airport',
+    city: 'Riyadh',
+    country: 'SA',
+    countryName: 'Saudi Arabia',
+    continent: 'Asia'
   },
   RMI: {
     latitude: 44.02029,
@@ -60749,7 +60776,7 @@ export const geo: Record<string, GeoEntry> = {
     latitude: 14.794339,
     longitude: -92.370025,
     name: 'Tapachula International Airport',
-    city: 'Tapachula',
+    city: 'Tapachula de Córdova y Ordóñez',
     country: 'MX',
     countryName: 'Mexico',
     continent: 'North America'
@@ -64694,6 +64721,15 @@ export const geo: Record<string, GeoEntry> = {
     city: 'Ube',
     country: 'JP',
     countryName: 'Japan',
+    continent: 'Asia'
+  },
+  UBL: {
+    latitude: 1.46627,
+    longitude: 111.5006,
+    name: 'Bebuling Airport',
+    city: 'Betong',
+    country: 'MY',
+    countryName: 'Malaysia',
     continent: 'Asia'
   },
   UBN: {
@@ -73690,7 +73726,7 @@ export const geo: Record<string, GeoEntry> = {
   YTE: {
     latitude: 64.23094,
     longitude: -76.52862,
-    name: 'Cape Dorset Airport',
+    name: 'Kinngait Airport',
     city: 'Kinngait',
     country: 'CA',
     countryName: 'Canada',
@@ -73924,7 +73960,7 @@ export const geo: Record<string, GeoEntry> = {
   YUX: {
     latitude: 68.77611,
     longitude: -81.24361,
-    name: 'Hall Beach Airport',
+    name: 'Sanirajak Airport',
     city: 'Sanirajak',
     country: 'CA',
     countryName: 'Canada',
