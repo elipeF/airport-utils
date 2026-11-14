@@ -1,6 +1,6 @@
 // generated — do not edit
 // Source: https://raw.githubusercontent.com/opentraveldata/opentraveldata/master/opentraveldata/optd_por_public.csv
-// Source SHA-256: 2ca1750d555fdaa8b0e2e9a1345fb8fefbe879f5707e9466a46757dbc4a31443
+// Source SHA-256: bb5c27bf9a1038c7bbf92c3289f0c5d248a9fa071e0877dd5924b7961fd86ea2
 // Filtered and transformed from Open Travel Data (OPTD); see NOTICE.
 export const timezones: Record<string, string> = {
   AAA: 'Pacific/Tahiti',
@@ -1202,6 +1202,7 @@ export const timezones: Record<string, string> = {
   CHB: 'Asia/Karachi',
   CHC: 'Pacific/Auckland',
   CHD: 'America/Bahia',
+  CHE: 'Africa/Lagos',
   CHF: 'Asia/Seoul',
   CHG: 'Asia/Shanghai',
   CHH: 'America/Lima',
@@ -3466,6 +3467,7 @@ export const timezones: Record<string, string> = {
   KGY: 'Australia/Brisbane',
   KGZ: 'America/Anchorage',
   KHA: 'Asia/Tehran',
+  KHB: 'Asia/Baghdad',
   KHC: 'Europe/Simferopol',
   KHD: 'Asia/Tehran',
   KHE: 'Europe/Kyiv',
@@ -6038,6 +6040,7 @@ export const timezones: Record<string, string> = {
   RME: 'America/New_York',
   RMF: 'Africa/Cairo',
   RMG: 'America/New_York',
+  RMH: 'Asia/Riyadh',
   RMI: 'Europe/Rome',
   RMK: 'Australia/Adelaide',
   RML: 'Asia/Colombo',
@@ -7190,6 +7193,7 @@ export const timezones: Record<string, string> = {
   UAX: 'America/Guatemala',
   UBA: 'America/Sao_Paulo',
   UBJ: 'Asia/Tokyo',
+  UBL: 'Asia/Kuching',
   UBN: 'Asia/Ulaanbaatar',
   UBP: 'Asia/Bangkok',
   UBR: 'Asia/Jayapura',
