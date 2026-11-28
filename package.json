@@ -83,7 +83,7 @@
     "@types/node": "^26.1.2",
     "@vitest/coverage-v8": "^5.0.0",
     "conventional-changelog-conventionalcommits": "^10.2.1",
-    "oxfmt": "^0.79.0",
+    "oxfmt": "^0.80.0",
     "oxlint": "^1.76.0",
     "rolldown": "^1.2.0",
     "semantic-release": "^26.0.1",
